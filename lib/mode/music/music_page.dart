@@ -76,50 +76,58 @@ class _MusicPageState extends State<MusicPage> {
       }
       setState(() {});
 
-    //   String test = value['data'];
-    //   var document = parse(test);
-    //   var domRow = document.querySelectorAll('.card-text .row');
-    //   List<SongListModel> tempList = [];
-    //   for (var parentDom in domRow) {
-    //     final aItem = parentDom.querySelector('a');
-    //     String aHref = '', aText = '', songId = '';
-    //     if (aItem != null) {
-    //       aHref = aItem.attributes['href']!;
-    //       aText = aItem.text;
-    //       if (aHref != '') {
-    //         songId = aHref.split('/').last;
-    //       }
-    //       String? artistText =
-    //           parentDom.querySelector('.text-success.col-4.col-content')?.text;
-    //       String songUrl = '';
-    //       await SongApi().getSongUrlById(songId).then((value) {
-    //         if (value['data'] != null) {
-    //           songUrl = value['data']['url'];
-    //         }
-    //       }).catchError((e) {
-    //         songUrl = '暂无声源';
-    //         print('songUrl error $songId: $e');
-    //       });
-    //       print(
-    //           'songId: $songId, songName: ${aText.trim()}, artist: ${artistText?.trim()},, songUrl: $songUrl');
-    //       tempList.add(SongListModel.fromMap({
-    //         'songId': songId,
-    //         'songName': aText.trim(),
-    //         'songUrl': songUrl,
-    //         'artist': artistText?.trim() ?? '未知艺术家',
-    //         'cover': '',
-    //         'lrcArr': [],
-    //         'isPlaying': false,
-    //         'onChanged': _onMusicChanged,
-    //       }));
-    //     }
-    //   }
-    //   setState(() {
-    //     songList = tempList;
-    //     print('songList: ${songList.length}');
-    //     EasyLoading.dismiss();
-    //   });
+      //   String test = value['data'];
+      //   var document = parse(test);
+      //   var domRow = document.querySelectorAll('.card-text .row');
+      //   List<SongListModel> tempList = [];
+      //   for (var parentDom in domRow) {
+      //     final aItem = parentDom.querySelector('a');
+      //     String aHref = '', aText = '', songId = '';
+      //     if (aItem != null) {
+      //       aHref = aItem.attributes['href']!;
+      //       aText = aItem.text;
+      //       if (aHref != '') {
+      //         songId = aHref.split('/').last;
+      //       }
+      //       String? artistText =
+      //           parentDom.querySelector('.text-success.col-4.col-content')?.text;
+      //       String songUrl = '';
+      //       await SongApi().getSongUrlById(songId).then((value) {
+      //         if (value['data'] != null) {
+      //           songUrl = value['data']['url'];
+      //         }
+      //       }).catchError((e) {
+      //         songUrl = '暂无声源';
+      //         print('songUrl error $songId: $e');
+      //       });
+      //       print(
+      //           'songId: $songId, songName: ${aText.trim()}, artist: ${artistText?.trim()},, songUrl: $songUrl');
+      //       tempList.add(SongListModel.fromMap({
+      //         'songId': songId,
+      //         'songName': aText.trim(),
+      //         'songUrl': songUrl,
+      //         'artist': artistText?.trim() ?? '未知艺术家',
+      //         'cover': '',
+      //         'lrcArr': [],
+      //         'isPlaying': false,
+      //         'onChanged': _onMusicChanged,
+      //       }));
+      //     }
+      //   }
+      //   setState(() {
+      //     songList = tempList;
+      //     print('songList: ${songList.length}');
+      //     EasyLoading.dismiss();
+      //   });
     });
+  }
+
+  get inputContentIsEmpty =>
+      inputController.text.isEmpty || inputController.text.trim() == '';
+
+  void clearSearch() {
+    inputController.clear();
+    setState(() {});
   }
 
   @override
@@ -136,29 +144,44 @@ class _MusicPageState extends State<MusicPage> {
                   children: <Widget>[
                     Expanded(
                         child: Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: TextField(
-                        controller: inputController,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: '请输入歌曲/歌手名称',
-                        ),
-                        onChanged: (value) {
-                          setState(() {});
-                        },
-                        onSubmitted: (value) {
-                          toSearch();
-                        },
-                      ),
-                    )),
+                          padding: const EdgeInsets.all(4.0),
+                          child: TextField(
+                            controller: inputController,
+                            decoration: InputDecoration(
+                                border: const OutlineInputBorder(),
+                                labelText: '请输入歌曲/歌手名称',
+                                suffixIcon: IconButton(
+                                    style: ButtonStyle(
+                                      foregroundColor: MaterialStateProperty.all(
+                                          inputContentIsEmpty
+                                              ? Colors.grey
+                                              : Colors.purple),
+                                    ),
+                                    onPressed:
+                                        inputContentIsEmpty ? () {} : clearSearch,
+                                    icon: Icon(inputContentIsEmpty
+                                        ? Icons.search
+                                        : Icons.clear))),
+                            onChanged: (value) {
+                              setState(() {});
+                            },
+                            onSubmitted: (value) {
+                              if (inputContentIsEmpty) return;
+                              toSearch();
+                            },
+                          ),
+                        )
+                    ),
                     SizedBox(
                       width: 70,
                       child: TextButton(
                         style: ButtonStyle(
-                          foregroundColor: inputController.text.isEmpty ? MaterialStateProperty.all(Colors.grey): MaterialStateProperty.all(Colors.purple),
+                          foregroundColor: inputContentIsEmpty
+                              ? MaterialStateProperty.all(Colors.grey)
+                              : MaterialStateProperty.all(Colors.purple),
                         ),
                         onPressed: () {
-                          if (inputController.text.isEmpty) return;
+                          if (inputContentIsEmpty) return;
                           toSearch();
                         },
                         child: const Text('搜索'),
@@ -169,9 +192,13 @@ class _MusicPageState extends State<MusicPage> {
               ),
               SizedBox(
                 height: 24,
-                child: Text(hasSearch == false ? '' : (songList.isEmpty ? '暂无数据' : '共${songList.length}首歌')),
+                child: Text(hasSearch == false
+                    ? ''
+                    : (songList.isEmpty ? '暂无数据' : '共${songList.length}首歌')),
               ),
-              songList.isNotEmpty ? const Divider(height: 1) : const SizedBox.shrink(),
+              songList.isNotEmpty
+                  ? const Divider(height: 1)
+                  : const SizedBox.shrink(),
               Expanded(child: SongList(songList: songList))
             ],
           )),
