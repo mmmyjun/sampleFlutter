@@ -19,6 +19,8 @@ class MusicPage extends StatefulWidget {
 }
 
 class _MusicPageState extends State<MusicPage> {
+  bool hasSearch = false;
+
   @override
   void initState() {
     super.initState();
@@ -47,6 +49,7 @@ class _MusicPageState extends State<MusicPage> {
     SongApi().getAllSongInfo(inputController.text).then((value) {
       print(value);
       EasyLoading.dismiss();
+      hasSearch = true;
 
       var code = value['code'];
       List data = value['data'];
@@ -140,6 +143,9 @@ class _MusicPageState extends State<MusicPage> {
                           border: OutlineInputBorder(),
                           labelText: '请输入歌曲/歌手名称',
                         ),
+                        onChanged: (value) {
+                          setState(() {});
+                        },
                         onSubmitted: (value) {
                           toSearch();
                         },
@@ -148,7 +154,11 @@ class _MusicPageState extends State<MusicPage> {
                     SizedBox(
                       width: 70,
                       child: TextButton(
+                        style: ButtonStyle(
+                          foregroundColor: inputController.text.isEmpty ? MaterialStateProperty.all(Colors.grey): MaterialStateProperty.all(Colors.purple),
+                        ),
                         onPressed: () {
+                          if (inputController.text.isEmpty) return;
                           toSearch();
                         },
                         child: const Text('搜索'),
@@ -157,6 +167,11 @@ class _MusicPageState extends State<MusicPage> {
                   ],
                 ),
               ),
+              SizedBox(
+                height: 24,
+                child: Text(hasSearch == false ? '' : (songList.isEmpty ? '暂无数据' : '共${songList.length}首歌')),
+              ),
+              songList.isNotEmpty ? const Divider(height: 1) : const SizedBox.shrink(),
               Expanded(child: SongList(songList: songList))
             ],
           )),

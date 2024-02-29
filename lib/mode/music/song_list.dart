@@ -34,14 +34,6 @@ class _SongListState extends State<SongList> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.songList.isEmpty) {
-      return SizedBox(
-        height: MediaQuery.of(context).size.height,
-        child: const Center(
-          child: Text('暂无数据'),
-        ),
-      );
-    }
     return ListView.separated(
         separatorBuilder: (BuildContext context, int index) => const Divider(),
         itemCount: widget.songList.length,
