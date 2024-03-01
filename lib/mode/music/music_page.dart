@@ -199,7 +199,7 @@ class _MusicPageState extends State<MusicPage> {
               songList.isNotEmpty
                   ? const Divider(height: 1)
                   : const SizedBox.shrink(),
-              Expanded(child: SongList(songList: songList))
+              Expanded(child: SongList(lists: songList))
             ],
           )),
     );

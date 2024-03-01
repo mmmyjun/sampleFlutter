@@ -14,7 +14,13 @@ class _NotesPageState extends State<NotesPage> {
       appBar: AppBar(
         title: const Text('笔记'),
       ),
-      body: const Text('笔记待完成'),
+      body: Column(
+        children: [
+          const Center(
+            child: Text('这是笔记页面'),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -9,8 +9,8 @@ import 'package:html/parser.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 class SongList extends StatefulWidget {
-  List<SongListModel> songList = [];
-  SongList({Key? key, required this.songList}) : super(key: key);
+  List<SongListModel> lists = [];
+  SongList({Key? key, required this.lists}) : super(key: key);
 
   @override
   State<SongList> createState() => _SongListState();
@@ -18,6 +18,8 @@ class SongList extends StatefulWidget {
 
 class _SongListState extends State<SongList> {
   int activeIndex = -1;
+
+  get parentList => widget.lists;
 
   AudioPlayer player = AudioPlayer()..setReleaseMode(ReleaseMode.loop);
 
@@ -36,21 +38,21 @@ class _SongListState extends State<SongList> {
   Widget build(BuildContext context) {
     return ListView.separated(
         separatorBuilder: (BuildContext context, int index) => const Divider(),
-        itemCount: widget.songList.length,
+        itemCount: parentList.length,
         itemBuilder: (_, int index) {
           return ListTile(
             title: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(widget.songList[index].songName,
+                Text(parentList[index].songName,
                     textAlign: TextAlign.left,
                     style: TextStyle(
                         fontSize: 24,
-                        color: widget.songList[index].songUrl == '暂无声源'
+                        color: parentList[index].songUrl == '暂无声源'
                             ? Colors.grey
                             : Colors.black)),
                 const SizedBox(width: 12),
-                Text(widget.songList[index].artist ?? '',
+                Text(parentList[index].artist ?? '',
                     textAlign: TextAlign.left,
                     style: const TextStyle(
                         fontSize: 18,
@@ -58,7 +60,7 @@ class _SongListState extends State<SongList> {
               ],
             ), // 这行放songName和artist
             subtitle:
-                activeIndex == index && widget.songList[index].songUrl != '暂无声源'
+                activeIndex == index && parentList[index].songUrl != '暂无声源'
                     ? PlayerWidget(player: player)
                     : const SizedBox.shrink(),
             onTap: () {
@@ -66,17 +68,17 @@ class _SongListState extends State<SongList> {
                 player.stop();
                 activeIndex = index;
               }
-              if (widget.songList[index].songUrl != '暂无声源') {
-                if (!widget.songList[index].isPlaying) {
-                  player.play(UrlSource(widget.songList[index].songUrl));
+              if (parentList[index].songUrl != '暂无声源') {
+                if (!parentList[index].isPlaying) {
+                  player.play(UrlSource(parentList[index].songUrl));
                 } else {
                   player.pause();
                 }
               }
-              widget.songList[index].onChanged(widget.songList[index].songId,
-                  !widget.songList[index].isPlaying);
+              parentList[index].onChanged(parentList[index].songId,
+                  !parentList[index].isPlaying);
             },
-            trailing: widget.songList[index].isPlaying
+            trailing: parentList[index].isPlaying
                 ? const Icon(Icons.pause)
                 : const Icon(Icons.play_arrow),
           );

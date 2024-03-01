@@ -4,6 +4,7 @@ import './common_model.dart';
 
 import 'package:sample_flutter/mode/music/music_page.dart';
 import './mode/notes/notes_page.dart';
+import './mode/memo/memo_page.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -20,6 +21,8 @@ class _MyHomePageState extends State<MyHomePage> {
   List<WidgetModel> widgetArr = [
     WidgetModel('音乐', const Icon(Icons.music_video, color: Colors.green),
         const MusicPage()),
+    WidgetModel('备忘录', const Icon(Icons.query_stats_outlined, color: Colors.green),
+        const MemoPage()),
     WidgetModel('笔记', const Icon(Icons.edit_note, color: Colors.green),
         const NotesPage()),
   ];
