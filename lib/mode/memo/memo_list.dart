@@ -31,13 +31,6 @@ class _MemoListState extends State<MemoList> {
               textAlign: TextAlign.right,
               style: const TextStyle(fontSize: 12, color: Colors.green)),
           onTap: () {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => MemoDetail(obj: parentList[index]),
-            //   ),
-            // );
-
             widget.onChanged(context, parentList[index]);
           },
         );

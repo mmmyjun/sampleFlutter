@@ -64,30 +64,28 @@ class _MemoDetailState extends State<MemoDetail> {
                     controller: inputController,
                     decoration: const InputDecoration(
                         labelText: '请输入标题', hintText: '标题'),
-                    validator: (String? value) {
-                      if (value == null || value.isEmpty) {
-                        return '请输入标题~~';
-                      }
-                      return null;
-                    },
-                    onChanged: (value) {
-                    },
+                    // validator: (String? value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return '请输入标题~~';
+                    //   }
+                    //   return null;
+                    // },
+                    onChanged: (value) {},
                   )
               ),
               Expanded(
                 child: Padding(
-                  padding: EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(8),
                   child: TextFormField(
                     controller: textareaController,
                     decoration:
                     const InputDecoration(labelText: '请输入内容', hintText: '内容'),
-                    validator: (String? value) {
-                      print('validator 内容:$value');
-                      if (value == null || value.isEmpty) {
-                        return '请输入内容~~';
-                      }
-                      return null;
-                    },
+                    // validator: (String? value) {
+                    //   if (value == null || value.isEmpty) {
+                    //     return '请输入内容~~';
+                    //   }
+                    //   return null;
+                    // },
                     maxLines: 10,
                     onChanged: (value) {
                     },

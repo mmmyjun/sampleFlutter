@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 import 'memo_models.dart';
 import 'memo_list.dart';
 import 'memo_detail.dart';
@@ -11,15 +15,32 @@ class MemoPage extends StatefulWidget {
 }
 
 class _MemoPageState extends State<MemoPage> {
-  @override
-  void initState() {
-    super.initState();
-  }
+  final storage = const FlutterSecureStorage();
 
   final inputController = TextEditingController(text: '');
   List<MemoListModel> memoList = [];
 
+  @override
+  void initState() {
+    super.initState();
+
+    storage.read(key: 'memoList').then((value) {
+      if (value != null) {
+        var list = json.decode(value);
+        memoList = list.map<MemoListModel>((e) => MemoListModel.fromMap(e)).toList();
+        setState(() {});
+      }
+    });
+  }
+
+
   get inputContentIsEmpty => inputController.text.isEmpty;
+
+  get filteredList => memoList
+      .where((element) =>
+          element.title.contains(inputController.text) ||
+          element.content.contains(inputController.text))
+      .toList();
 
   void clearSearch() {
     inputController.clear();
@@ -27,14 +48,9 @@ class _MemoPageState extends State<MemoPage> {
   }
 
   void toSearch() {
-    print('searching......');
-    memoList = memoList
-        .where((element) =>
-            element.title.contains(inputController.text) ||
-            element.content.contains(inputController.text))
-        .toList();
     setState(() {});
   }
+
 
   Future<void> _navigateAndDisplaySelection(BuildContext context, MemoListModel? paramOfDetail) async {
     // Navigator.push returns a Future that completes after calling
@@ -58,12 +74,17 @@ class _MemoPageState extends State<MemoPage> {
     if (index != -1) {
       if (memoList[index].title != title || memoList[index].content != content) {
         memoList.removeAt(index);
+
+        storage.write(key: 'memoList', value: json.encode(memoList.map((e) => e.toMap()).toList()));
       }
     }
-    print('index: $index, id: $id, title: $title, content: $content');
     setState(() {
       if ((index == -1 || (memoList[index].title != title || memoList[index].content != content)) && (title != '' || content != '')) {
-        memoList = [MemoListModel(id: formattedDate, title: title, content: content, date: formattedDate), ...memoList];
+        memoList = [MemoListModel.fromMap({
+          'id': formattedDate, 'title': title, 'content': content, 'date': formattedDate
+        }), ...memoList];
+
+        storage.write(key: 'memoList', value: json.encode(memoList.map((e) => e.toMap()).toList()));
       }
     });
 
@@ -83,35 +104,34 @@ class _MemoPageState extends State<MemoPage> {
       ),
       body: Column(
         children: [
-          // Padding(
-          //   padding: EdgeInsets.all(4),
-          //   child: TextField(
-          //     controller: inputController,
-          //     decoration: InputDecoration(
-          //         border: const OutlineInputBorder(),
-          //         labelText: '请输入关键词: 标题/内容',
-          //         suffixIcon: IconButton(
-          //             style: ButtonStyle(
-          //               foregroundColor: MaterialStateProperty.all(
-          //                   inputContentIsEmpty ? Colors.grey : Colors.purple),
-          //             ),
-          //             onPressed: inputContentIsEmpty ? () {} : clearSearch,
-          //             icon: Icon(
-          //                 inputContentIsEmpty ? Icons.search : Icons.clear))),
-          //     onChanged: (value) {
-          //       toSearch();
-          //     },
-          //     onSubmitted: (value) {
-          //       if (inputContentIsEmpty) return;
-          //     },
-          //   ),
-          // ),
-          Expanded(child: MemoList(lists: memoList, onChanged: _navigateAndDisplaySelection)),
+          Padding(
+            padding: const EdgeInsets.all(4),
+            child: TextField(
+              controller: inputController,
+              decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  labelText: '请输入关键词: 标题/内容',
+                  suffixIcon: IconButton(
+                      style: ButtonStyle(
+                        foregroundColor: MaterialStateProperty.all(
+                            inputContentIsEmpty ? Colors.grey : Colors.purple),
+                      ),
+                      onPressed: inputContentIsEmpty ? () {} : clearSearch,
+                      icon: Icon(
+                          inputContentIsEmpty ? Icons.search : Icons.clear))),
+              onChanged: (value) {
+                toSearch();
+              },
+              onSubmitted: (value) {
+                if (inputContentIsEmpty) return;
+              },
+            ),
+          ),
+          Expanded(child: MemoList(lists: filteredList, onChanged: _navigateAndDisplaySelection)),
         ],
       ),
       floatingActionButton: FloatingActionButton.small(
         onPressed: () {
-          print('add floating button clicked');
           _navigateAndDisplaySelection(context, null);
         },
         child: const Icon(Icons.add),

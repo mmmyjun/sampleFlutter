@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 
-import 'package:html/parser.dart';
-
 import './song_list.dart';
 
 import '../../request/song_api.dart';
@@ -75,50 +73,6 @@ class _MusicPageState extends State<MusicPage> {
         ));
       }
       setState(() {});
-
-      //   String test = value['data'];
-      //   var document = parse(test);
-      //   var domRow = document.querySelectorAll('.card-text .row');
-      //   List<SongListModel> tempList = [];
-      //   for (var parentDom in domRow) {
-      //     final aItem = parentDom.querySelector('a');
-      //     String aHref = '', aText = '', songId = '';
-      //     if (aItem != null) {
-      //       aHref = aItem.attributes['href']!;
-      //       aText = aItem.text;
-      //       if (aHref != '') {
-      //         songId = aHref.split('/').last;
-      //       }
-      //       String? artistText =
-      //           parentDom.querySelector('.text-success.col-4.col-content')?.text;
-      //       String songUrl = '';
-      //       await SongApi().getSongUrlById(songId).then((value) {
-      //         if (value['data'] != null) {
-      //           songUrl = value['data']['url'];
-      //         }
-      //       }).catchError((e) {
-      //         songUrl = '暂无声源';
-      //         print('songUrl error $songId: $e');
-      //       });
-      //       print(
-      //           'songId: $songId, songName: ${aText.trim()}, artist: ${artistText?.trim()},, songUrl: $songUrl');
-      //       tempList.add(SongListModel.fromMap({
-      //         'songId': songId,
-      //         'songName': aText.trim(),
-      //         'songUrl': songUrl,
-      //         'artist': artistText?.trim() ?? '未知艺术家',
-      //         'cover': '',
-      //         'lrcArr': [],
-      //         'isPlaying': false,
-      //         'onChanged': _onMusicChanged,
-      //       }));
-      //     }
-      //   }
-      //   setState(() {
-      //     songList = tempList;
-      //     print('songList: ${songList.length}');
-      //     EasyLoading.dismiss();
-      //   });
     });
   }
 
