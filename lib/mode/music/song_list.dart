@@ -44,10 +44,12 @@ class _SongListState extends State<SongList> {
             title: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                Image.network(parentList[index].cover,
+                    width: 50, height: 50, fit: BoxFit.cover),
                 Text(parentList[index].songName,
                     textAlign: TextAlign.left,
                     style: TextStyle(
-                        fontSize: 24,
+                        fontSize: 20,
                         color: parentList[index].songUrl == '暂无声源'
                             ? Colors.grey
                             : Colors.black)),
@@ -55,7 +57,7 @@ class _SongListState extends State<SongList> {
                 Text(parentList[index].artist ?? '',
                     textAlign: TextAlign.left,
                     style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: 14,
                         color: Colors.blue)),
               ],
             ), // 这行放songName和artist
