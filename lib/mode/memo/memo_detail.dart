@@ -51,7 +51,7 @@ class _MemoDetailState extends State<MemoDetail> {
               Padding(
                   padding: const EdgeInsets.all(8),
                   child: Text(
-                    'id: $oId',
+                    '时间: $oId',
                     style: const TextStyle(
                       fontSize: 12,
                       color: Colors.grey,

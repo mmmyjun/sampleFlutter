@@ -27,12 +27,12 @@ class _MemoPageState extends State<MemoPage> {
     storage.read(key: 'memoList').then((value) {
       if (value != null) {
         var list = json.decode(value);
-        memoList = list.map<MemoListModel>((e) => MemoListModel.fromMap(e)).toList();
+        memoList =
+            list.map<MemoListModel>((e) => MemoListModel.fromMap(e)).toList();
         setState(() {});
       }
     });
   }
-
 
   get inputContentIsEmpty => inputController.text.isEmpty;
 
@@ -51,8 +51,8 @@ class _MemoPageState extends State<MemoPage> {
     setState(() {});
   }
 
-
-  Future<void> _navigateAndDisplaySelection(BuildContext context, MemoListModel? paramOfDetail) async {
+  Future<void> _navigateAndDisplaySelection(
+      BuildContext context, MemoListModel? paramOfDetail) async {
     // Navigator.push returns a Future that completes after calling
     // Navigator.pop on the Selection Screen.
     final result = await Navigator.push(
@@ -72,28 +72,49 @@ class _MemoPageState extends State<MemoPage> {
     var content = result['content'];
     var index = memoList.indexWhere((element) => id != '' && element.id == id);
     if (index != -1) {
-      if (memoList[index].title != title || memoList[index].content != content) {
+      if (memoList[index].title != title ||
+          memoList[index].content != content) {
         memoList.removeAt(index);
 
-        storage.write(key: 'memoList', value: json.encode(memoList.map((e) => e.toMap()).toList()));
+        storage.write(
+            key: 'memoList',
+            value: json.encode(memoList.map((e) => e.toMap()).toList()));
       }
     }
     setState(() {
-      if ((index == -1 || (memoList[index].title != title || memoList[index].content != content)) && (title != '' || content != '')) {
-        memoList = [MemoListModel.fromMap({
-          'id': formattedDate, 'title': title, 'content': content, 'date': formattedDate
-        }), ...memoList];
+      if ((index == -1 ||
+              (memoList[index].title != title ||
+                  memoList[index].content != content)) &&
+          (title != '' || content != '')) {
+        memoList = [
+          MemoListModel.fromMap({
+            'id': formattedDate,
+            'title': title,
+            'content': content,
+            'date': formattedDate
+          }),
+          ...memoList
+        ];
 
-        storage.write(key: 'memoList', value: json.encode(memoList.map((e) => e.toMap()).toList()));
+        storage.write(
+            key: 'memoList',
+            value: json.encode(memoList.map((e) => e.toMap()).toList()));
       }
     });
-
 
     // After the Selection Screen returns a result, hide any previous snackbars
     // and show the new result.
     // ScaffoldMessenger.of(context)
     //   ..removeCurrentSnackBar()
     //   ..showSnackBar(SnackBar(content: Text('$result')));
+  }
+
+  void _deleteMemo(int index) {
+    memoList.removeAt(index);
+    storage.write(
+        key: 'memoList',
+        value: json.encode(memoList.map((e) => e.toMap()).toList()));
+    setState(() {});
   }
 
   @override
@@ -105,11 +126,13 @@ class _MemoPageState extends State<MemoPage> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(4),
+            padding: const EdgeInsets.all(8.0),
             child: TextField(
               controller: inputController,
               decoration: InputDecoration(
-                  border: const OutlineInputBorder(),
+                  border: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.purple),
+                  ),
                   labelText: '请输入关键词: 标题/内容',
                   suffixIcon: IconButton(
                       style: ButtonStyle(
@@ -127,7 +150,11 @@ class _MemoPageState extends State<MemoPage> {
               },
             ),
           ),
-          Expanded(child: MemoList(lists: filteredList, onChanged: _navigateAndDisplaySelection)),
+          Expanded(
+              child: MemoList(
+                  lists: filteredList,
+                  onChanged: _navigateAndDisplaySelection,
+                  onDeleted: _deleteMemo)),
         ],
       ),
       floatingActionButton: FloatingActionButton.small(

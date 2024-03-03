@@ -7,9 +7,15 @@ import './mode/notes/notes_page.dart';
 import './mode/memo/memo_page.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage(
+      {super.key,
+      required this.title,
+      required this.themeMode,
+      required this.setThemeMode});
 
   final String title;
+  final ThemeMode themeMode;
+  final void Function(ThemeMode mode) setThemeMode;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -21,7 +27,9 @@ class _MyHomePageState extends State<MyHomePage> {
   List<WidgetModel> widgetArr = [
     WidgetModel('音乐', const Icon(Icons.music_video, color: Colors.green),
         const MusicPage()),
-    WidgetModel('备忘录', const Icon(Icons.query_stats_outlined, color: Colors.green),
+    WidgetModel(
+        '备忘录',
+        const Icon(Icons.query_stats_outlined, color: Colors.green),
         const MemoPage()),
     WidgetModel('笔记', const Icon(Icons.edit_note, color: Colors.green),
         const NotesPage()),
@@ -29,10 +37,38 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text(''),
+        actions: [
+          Tooltip(
+            message: 'system theme',
+            child: IconButton(
+              icon: const Icon(Icons.auto_awesome),
+              onPressed: () {
+                widget.setThemeMode(ThemeMode.system);
+              },
+            ),
+          ),
+          Tooltip(
+            message: 'light',
+            child: IconButton(
+              icon: const Icon(Icons.light_mode),
+              onPressed: () {
+                widget.setThemeMode(ThemeMode.light);
+              },
+            ),
+          ),
+          Tooltip(
+            message: 'dark',
+            child: IconButton(
+              icon: const Icon(Icons.dark_mode),
+              onPressed: () {
+                widget.setThemeMode(ThemeMode.dark);
+              },
+            ),
+          ),
+        ],
       ),
       body: <Widget>[
         /// Home page
@@ -66,7 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
             currentPageIndex = index;
           });
         },
-        indicatorColor: Colors.amber,
+        indicatorColor: Colors.purple,
         selectedIndex: currentPageIndex,
         destinations: const <Widget>[
           NavigationDestination(
@@ -80,14 +116,13 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: const <Widget>[
             DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: Colors.purple,
               ),
               child: Text(
                 'Drawer Header',
@@ -141,7 +176,9 @@ class _GridContainerState extends State<GridContainer> {
                 Expanded(
                   child: IconButton(
                     hoverColor: Colors.transparent,
-                    iconSize: MediaQuery.of(context).size.width > 1000 ? 80 : (MediaQuery.of(context).size.width > 600 ? 60 : 30),
+                    iconSize: MediaQuery.of(context).size.width > 1000
+                        ? 80
+                        : (MediaQuery.of(context).size.width > 600 ? 60 : 30),
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => widget.widgetArr[index].child));

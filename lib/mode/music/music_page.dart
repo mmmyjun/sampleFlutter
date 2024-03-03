@@ -98,7 +98,7 @@ class _MusicPageState extends State<MusicPage> {
                   children: <Widget>[
                     Expanded(
                         child: Padding(
-                          padding: const EdgeInsets.all(4.0),
+                          padding: const EdgeInsets.all(8.0),
                           child: TextField(
                             controller: inputController,
                             decoration: InputDecoration(

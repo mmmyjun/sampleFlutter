@@ -6,24 +6,32 @@ import './home.dart';
 void main() {
   runApp(const MyApp());
 }
-
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+class _MyAppState extends State<MyApp> {
+  ThemeMode themeMode = ThemeMode.system;
+  void setThemeMode(ThemeMode mode) {
+    setState(() {
+      themeMode = mode;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      darkTheme: ThemeData.dark(useMaterial3: true),
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.purple),
         useMaterial3: true,
+        primaryColor: Colors.purple,
       ),
-      home: const MyHomePage(title: 'Home Page'),
-      // home: Container(
-      //   child: Text('22')
-      // )
+      themeMode: themeMode,
+      home: MyHomePage(title: 'Home Page', themeMode: themeMode, setThemeMode: setThemeMode),
     );
   }
 }
-
 
