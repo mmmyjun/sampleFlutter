@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import '../../storage_single_pattern.dart';
 import 'memo_models.dart';
 import 'memo_list.dart';
 import 'memo_detail.dart';
@@ -15,8 +16,6 @@ class MemoPage extends StatefulWidget {
 }
 
 class _MemoPageState extends State<MemoPage> {
-  final storage = const FlutterSecureStorage();
-
   final inputController = TextEditingController(text: '');
   List<MemoListModel> memoList = [];
 
@@ -24,7 +23,7 @@ class _MemoPageState extends State<MemoPage> {
   void initState() {
     super.initState();
 
-    storage.read(key: 'memoList').then((value) {
+    StorageSinglePattern().read('memoList').then((value) {
       if (value != null) {
         var list = json.decode(value);
         memoList =
@@ -76,9 +75,9 @@ class _MemoPageState extends State<MemoPage> {
           memoList[index].content != content) {
         memoList.removeAt(index);
 
-        storage.write(
-            key: 'memoList',
-            value: json.encode(memoList.map((e) => e.toMap()).toList()));
+        StorageSinglePattern().write(
+            'memoList',
+            json.encode(memoList.map((e) => e.toMap()).toList()));
       }
     }
     setState(() {
@@ -96,9 +95,9 @@ class _MemoPageState extends State<MemoPage> {
           ...memoList
         ];
 
-        storage.write(
-            key: 'memoList',
-            value: json.encode(memoList.map((e) => e.toMap()).toList()));
+        StorageSinglePattern().write(
+            'memoList',
+            json.encode(memoList.map((e) => e.toMap()).toList()));
       }
     });
 
@@ -111,9 +110,8 @@ class _MemoPageState extends State<MemoPage> {
 
   void _deleteMemo(int index) {
     memoList.removeAt(index);
-    storage.write(
-        key: 'memoList',
-        value: json.encode(memoList.map((e) => e.toMap()).toList()));
+    StorageSinglePattern().write(
+        'memoList', json.encode(memoList.map((e) => e.toMap()).toList()));
     setState(() {});
   }
 
@@ -152,7 +150,7 @@ class _MemoPageState extends State<MemoPage> {
           ),
           Expanded(
               child: MemoList(
-                  lists: filteredList,
+                  lists: filteredList as List<MemoListModel>,
                   onChanged: _navigateAndDisplaySelection,
                   onDeleted: _deleteMemo)),
         ],
