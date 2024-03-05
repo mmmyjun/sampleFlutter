@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 
 import './home.dart';
 
+import './request/http_utils/base_api.dart';
+
 void main() {
+  HttpUtils(); // 初始化网络请求
+
   runApp(const MyApp());
 }
 class MyApp extends StatefulWidget {

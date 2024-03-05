@@ -22,3 +22,5 @@ class StorageSinglePattern {
 // var storage = StorageSinglePattern();
 // storage.write('key', 'value');
 // storage.read('key').then((value) => print(value));
+// var storage2 = StorageSinglePattern();
+// identical(storage, storage2); // true
