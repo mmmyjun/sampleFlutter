@@ -115,6 +115,15 @@ class _MemoPageState extends State<MemoPage> {
     setState(() {});
   }
 
+  void _orderChanged(int oldIndex, int newIndex) {
+    final MemoListModel item = memoList.removeAt(oldIndex);
+    memoList.insert(newIndex, item);
+
+    StorageSinglePattern().write(
+        'memoList', json.encode(memoList.map((e) => e.toMap()).toList()));
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -151,6 +160,7 @@ class _MemoPageState extends State<MemoPage> {
           Expanded(
               child: MemoList(
                   lists: filteredList as List<MemoListModel>,
+                  onOrderChanged: _orderChanged,
                   onChanged: _navigateAndDisplaySelection,
                   onDeleted: _deleteMemo)),
         ],

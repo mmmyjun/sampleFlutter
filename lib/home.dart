@@ -25,13 +25,13 @@ class _MyHomePageState extends State<MyHomePage> {
   int currentPageIndex = 0;
 
   List<WidgetModel> widgetArr = [
-    WidgetModel('音乐', const Icon(Icons.music_video, color: Colors.green),
+    WidgetModel('音乐', const Icon(Icons.music_video, color: Colors.purple),
         const MusicPage()),
     WidgetModel(
         '备忘录',
-        const Icon(Icons.query_stats_outlined, color: Colors.green),
+        const Icon(Icons.query_stats_outlined, color: Colors.purple),
         const MemoPage()),
-    WidgetModel('笔记', const Icon(Icons.edit_note, color: Colors.green),
+    WidgetModel('笔记', const Icon(Icons.edit_note, color: Colors.purple),
         const NotesPage()),
   ];
 
