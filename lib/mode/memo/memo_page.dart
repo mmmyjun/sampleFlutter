@@ -8,6 +8,8 @@ import 'memo_models.dart';
 import 'memo_list.dart';
 import 'memo_detail.dart';
 
+import 'memo_page_more_operation.dart';
+
 class MemoPage extends StatefulWidget {
   const MemoPage({Key? key}) : super(key: key);
 
@@ -115,6 +117,29 @@ class _MemoPageState extends State<MemoPage> {
     setState(() {});
   }
 
+  /// 批量删除、排序
+  bool showBulkDel = false, showSort = false;
+  List<String> selectedIndex = [];
+  void _setBulkDel() {
+    showSort = false;
+    showBulkDel = !showBulkDel;
+    selectedIndex = [];
+    setState(() {});
+  }
+  void _setSort() {
+    showBulkDel = false;
+    selectedIndex = [];
+    showSort = !showSort;
+    setState(() {});
+  }
+  void _bulkDelMemo() {
+    memoList.removeWhere((element) => selectedIndex.contains(element.id));
+    setState(() {
+      selectedIndex = [];
+      StorageSinglePattern().write(
+          'memoList', json.encode(memoList.map((e) => e.toMap()).toList()));
+    });
+  }
   void _orderChanged(int oldIndex, int newIndex) {
     final MemoListModel item = memoList.removeAt(oldIndex);
     memoList.insert(newIndex, item);
@@ -124,11 +149,42 @@ class _MemoPageState extends State<MemoPage> {
     setState(() {});
   }
 
+  void _setSelectedIndex(String id) {
+    if (selectedIndex.contains(id)) {
+      selectedIndex.remove(id);
+    } else {
+      selectedIndex.add(id);
+    }
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('备忘录'),
+        actions: [
+          memoList.isNotEmpty && showBulkDel ? Row(
+            children: [
+              TextButton(onPressed: (){
+                if(selectedIndex.length == memoList.length) {
+                  selectedIndex = [];
+                } else {
+                  selectedIndex = memoList.map((e) => e.id).toList();
+                }
+                setState(() {});
+              }, child: Text(selectedIndex.length == memoList.length ? '全不选' : '全选')),
+              selectedIndex.isNotEmpty ? TextButton(onPressed: (){_bulkDelMemo();}, child: const Text('删除')) : const SizedBox.shrink(),
+            ],
+          ) : const SizedBox.shrink(),
+          const SizedBox(width: 24),
+          MemoPageMoreOperation(
+              showBulkDel: showBulkDel,
+              showSort: showSort,
+              setBulkDel: _setBulkDel,
+              setSort: _setSort,
+              bulkDelMemo: _bulkDelMemo),
+        ],
       ),
       body: Column(
         children: [
@@ -159,7 +215,12 @@ class _MemoPageState extends State<MemoPage> {
           ),
           Expanded(
               child: MemoList(
+                  selectedIndex: selectedIndex,
+                  onSelectedIndex: _setSelectedIndex,
+                  showBulkDel: showBulkDel,
+                  showSort: showSort,
                   lists: filteredList as List<MemoListModel>,
+                  onBulkDel: _bulkDelMemo,
                   onOrderChanged: _orderChanged,
                   onChanged: _navigateAndDisplaySelection,
                   onDeleted: _deleteMemo)),

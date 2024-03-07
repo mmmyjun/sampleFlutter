@@ -11,12 +11,22 @@ class MemoList extends StatefulWidget {
   void Function(BuildContext context, MemoListModel obj) onChanged;
   void Function(int index) onDeleted;
   void Function(int x, int y) onOrderChanged;
+  List<String> selectedIndex;
+  bool showBulkDel;
+  bool showSort;
+  void Function() onBulkDel;
+  void Function(String id) onSelectedIndex;
   MemoList(
       {Key? key,
       required this.lists,
+      required this.onBulkDel,
       required this.onChanged,
       required this.onDeleted,
-      required this.onOrderChanged})
+      required this.onOrderChanged,
+      required this.selectedIndex,
+      required this.showBulkDel,
+      required this.onSelectedIndex,
+      required this.showSort})
       : super(key: key);
 
   @override
@@ -33,33 +43,15 @@ class _MemoListState extends State<MemoList> {
     Navigator.pop(context, msg);
   }
 
+  void _changeCheckbox(String id) {
+    widget.onSelectedIndex(id);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final ColorScheme colorScheme = Theme.of(context).colorScheme;
-    final Color oddItemColor = colorScheme.secondary.withOpacity(0.05);
-    final Color evenItemColor = colorScheme.secondary.withOpacity(0.15);
-    final Color draggableItemColor = colorScheme.secondary;
-
-    Widget proxyDecorator(
-        Widget child, int index, Animation<double> animation) {
-      return AnimatedBuilder(
-        animation: animation,
-        builder: (BuildContext context, Widget? child) {
-          final double animValue = Curves.easeInOut.transform(animation.value);
-          final double elevation = lerpDouble(0, 6, animValue)!;
-          return Material(
-            elevation: elevation,
-            color: draggableItemColor,
-            shadowColor: draggableItemColor,
-            child: child,
-          );
-        },
-        child: child,
-      );
-    }
     return ReorderableListView(
+      buildDefaultDragHandles: widget.showSort,
       padding: const EdgeInsets.all(8),
-      proxyDecorator: proxyDecorator,
       children: <Widget>[
         for (int index = 0; index < parentList.length; index++)
           Column(
@@ -69,6 +61,7 @@ class _MemoListState extends State<MemoList> {
                 key: Key('$index'),
                 title: Row(
                   children: [
+                    widget.showBulkDel ? Checkbox(value: widget.selectedIndex.contains(parentList[index].id), onChanged: (e) => _changeCheckbox(parentList[index].id)) : const SizedBox.shrink(),
                     Text(parentList[index].title,
                         textAlign: TextAlign.left,
                         style: const TextStyle(
@@ -80,10 +73,14 @@ class _MemoListState extends State<MemoList> {
                             fontSize: 12, color: Colors.purpleAccent)),
                   ],
                 ),
-                subtitle: Text(parentList[index].content,
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(fontSize: 18, color: Colors.purpleAccent)),
-                trailing: IconButton(
+                subtitle: Padding(
+                  padding: EdgeInsets.only(left: widget.showBulkDel ? 30 : 0),
+                  child: Text(parentList[index].content,
+                      textAlign: TextAlign.left,
+                      style: const TextStyle(
+                          fontSize: 16, color: Colors.purpleAccent)),
+                ),
+                trailing: widget.showBulkDel ? const SizedBox.shrink() : (!widget.showSort ? IconButton(
                   icon: const Icon(Icons.delete_forever, color: Colors.purpleAccent),
                   onPressed: () => showDialog<String>(
                     context: context,
@@ -102,7 +99,7 @@ class _MemoListState extends State<MemoList> {
                       ],
                     ),
                   ),
-                ),
+                ) : const SizedBox.shrink()),
                 onTap: () {
                   widget.onChanged(context, parentList[index]);
                 },
