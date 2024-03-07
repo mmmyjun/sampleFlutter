@@ -62,48 +62,57 @@ class _MemoListState extends State<MemoList> {
       proxyDecorator: proxyDecorator,
       children: <Widget>[
         for (int index = 0; index < parentList.length; index++)
-          ListTile(
+          Column(
             key: Key('$index'),
-            title: Row(
-              children: [
-                Text(parentList[index].title,
-                    textAlign: TextAlign.left,
-                    style: const TextStyle(
-                        fontSize: 20, color: Colors.purpleAccent)),
-                const SizedBox(width: 12),
-                Text(parentList[index].id,
-                    textAlign: TextAlign.right,
-                    style: const TextStyle(
-                        fontSize: 12, color: Colors.purpleAccent)),
-              ],
-            ),
-            subtitle: Text(parentList[index].content,
-                textAlign: TextAlign.left,
-                style: const TextStyle(fontSize: 18, color: Colors.purpleAccent)),
-            trailing: IconButton(
-              icon: const Icon(Icons.delete_forever, color: Colors.purpleAccent),
-              onPressed: () => showDialog<String>(
-                context: context,
-                builder: (BuildContext context) => AlertDialog(
-                  title: const Text('Delete Memo'),
-                  content: const Text('delete this memo?'),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () => _confirmDelete(context, index, 'Cancel'),
-                      child: const Text('Cancel'),
-                    ),
-                    TextButton(
-                      onPressed: () => _confirmDelete(context, index, 'OK'),
-                      child: const Text('OK'),
-                    ),
+            children: [
+              ListTile(
+                key: Key('$index'),
+                title: Row(
+                  children: [
+                    Text(parentList[index].title,
+                        textAlign: TextAlign.left,
+                        style: const TextStyle(
+                            fontSize: 20, color: Colors.purpleAccent)),
+                    const SizedBox(width: 12),
+                    Text(parentList[index].id,
+                        textAlign: TextAlign.right,
+                        style: const TextStyle(
+                            fontSize: 12, color: Colors.purpleAccent)),
                   ],
                 ),
+                subtitle: Text(parentList[index].content,
+                    textAlign: TextAlign.left,
+                    style: const TextStyle(fontSize: 18, color: Colors.purpleAccent)),
+                trailing: IconButton(
+                  icon: const Icon(Icons.delete_forever, color: Colors.purpleAccent),
+                  onPressed: () => showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      title: const Text('Delete Memo'),
+                      content: const Text('delete this memo?'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => _confirmDelete(context, index, 'Cancel'),
+                          child: const Text('Cancel'),
+                        ),
+                        TextButton(
+                          onPressed: () => _confirmDelete(context, index, 'OK'),
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  widget.onChanged(context, parentList[index]);
+                },
               ),
-            ),
-            onTap: () {
-              widget.onChanged(context, parentList[index]);
-            },
-          ),
+              const Divider(
+                height: 1,
+                color: Colors.purpleAccent,
+              ),
+            ],
+          )
       ],
       onReorder: (int oldIndex, int newIndex) {
         setState(() {
