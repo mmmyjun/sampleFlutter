@@ -37,7 +37,7 @@ class _MemoPageState extends State<MemoPage> {
 
   get inputContentIsEmpty => inputController.text.isEmpty;
 
-  get filteredList => memoList
+  List<MemoListModel> get filteredList => memoList
       .where((element) =>
           element.title.contains(inputController.text) ||
           element.content.contains(inputController.text))
@@ -133,12 +133,32 @@ class _MemoPageState extends State<MemoPage> {
     setState(() {});
   }
   void _bulkDelMemo() {
-    memoList.removeWhere((element) => selectedIndex.contains(element.id));
-    setState(() {
-      selectedIndex = [];
-      StorageSinglePattern().write(
-          'memoList', json.encode(memoList.map((e) => e.toMap()).toList()));
-    });
+    showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('Delete Memo'),
+          content: const Text('delete this memo?'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                memoList.removeWhere((element) => selectedIndex.contains(element.id));
+                setState(() {
+                  selectedIndex = [];
+                  StorageSinglePattern().write(
+                      'memoList', json.encode(memoList.map((e) => e.toMap()).toList()));
+                });
+                Navigator.pop(context);
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        )
+    );
+
   }
   void _orderChanged(int oldIndex, int newIndex) {
     final MemoListModel item = memoList.removeAt(oldIndex);
@@ -167,13 +187,13 @@ class _MemoPageState extends State<MemoPage> {
           memoList.isNotEmpty && showBulkDel ? Row(
             children: [
               TextButton(onPressed: (){
-                if(selectedIndex.length == memoList.length) {
+                if(selectedIndex.length == filteredList.length) {
                   selectedIndex = [];
                 } else {
-                  selectedIndex = memoList.map((e) => e.id).toList();
+                  selectedIndex = filteredList.map((e) => e.id).toList();
                 }
                 setState(() {});
-              }, child: Text(selectedIndex.length == memoList.length ? '全不选' : '全选')),
+              }, child: Text(selectedIndex.length == filteredList.length ? '全不选' : '全选')),
               selectedIndex.isNotEmpty ? TextButton(onPressed: (){_bulkDelMemo();}, child: const Text('删除')) : const SizedBox.shrink(),
             ],
           ) : const SizedBox.shrink(),
