@@ -78,8 +78,7 @@ class _MemoPageState extends State<MemoPage> {
         memoList.removeAt(index);
 
         StorageSinglePattern().write(
-            'memoList',
-            json.encode(memoList.map((e) => e.toMap()).toList()));
+            'memoList', json.encode(memoList.map((e) => e.toMap()).toList()));
       }
     }
     setState(() {
@@ -98,8 +97,7 @@ class _MemoPageState extends State<MemoPage> {
         ];
 
         StorageSinglePattern().write(
-            'memoList',
-            json.encode(memoList.map((e) => e.toMap()).toList()));
+            'memoList', json.encode(memoList.map((e) => e.toMap()).toList()));
       }
     });
 
@@ -126,40 +124,59 @@ class _MemoPageState extends State<MemoPage> {
     selectedIndex = [];
     setState(() {});
   }
+
   void _setSort() {
+    if (inputController.text.isNotEmpty && showBulkDel) {
+      showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => AlertDialog(
+                title: const Text('Sort Memo'),
+                content: const Text('请清除搜索条件后再排序!'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
+              ));
+    }
+
     showBulkDel = false;
     selectedIndex = [];
     showSort = !showSort;
     setState(() {});
   }
+
   void _bulkDelMemo() {
     showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-          title: const Text('Delete Memo'),
-          content: const Text('delete this memo?'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                memoList.removeWhere((element) => selectedIndex.contains(element.id));
-                setState(() {
-                  selectedIndex = [];
-                  StorageSinglePattern().write(
-                      'memoList', json.encode(memoList.map((e) => e.toMap()).toList()));
-                });
-                Navigator.pop(context);
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        )
-    );
-
+              title: const Text('Delete Memo'),
+              content: const Text('delete this memo?'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    memoList.removeWhere(
+                        (element) => selectedIndex.contains(element.id));
+                    setState(() {
+                      selectedIndex = [];
+                      StorageSinglePattern().write('memoList',
+                          json.encode(memoList.map((e) => e.toMap()).toList()));
+                    });
+                    Navigator.pop(context);
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            ));
   }
+
   void _orderChanged(int oldIndex, int newIndex) {
     final MemoListModel item = memoList.removeAt(oldIndex);
     memoList.insert(newIndex, item);
@@ -184,19 +201,32 @@ class _MemoPageState extends State<MemoPage> {
       appBar: AppBar(
         title: const Text('备忘录'),
         actions: [
-          memoList.isNotEmpty && showBulkDel ? Row(
-            children: [
-              TextButton(onPressed: (){
-                if(selectedIndex.length == filteredList.length) {
-                  selectedIndex = [];
-                } else {
-                  selectedIndex = filteredList.map((e) => e.id).toList();
-                }
-                setState(() {});
-              }, child: Text(selectedIndex.length == filteredList.length ? '全不选' : '全选')),
-              selectedIndex.isNotEmpty ? TextButton(onPressed: (){_bulkDelMemo();}, child: const Text('删除')) : const SizedBox.shrink(),
-            ],
-          ) : const SizedBox.shrink(),
+          memoList.isNotEmpty && showBulkDel
+              ? Row(
+                  children: [
+                    TextButton(
+                        onPressed: () {
+                          if (selectedIndex.length == filteredList.length) {
+                            selectedIndex = [];
+                          } else {
+                            selectedIndex =
+                                filteredList.map((e) => e.id).toList();
+                          }
+                          setState(() {});
+                        },
+                        child: Text(selectedIndex.length == filteredList.length
+                            ? '全不选'
+                            : '全选')),
+                    selectedIndex.isNotEmpty
+                        ? TextButton(
+                            onPressed: () {
+                              _bulkDelMemo();
+                            },
+                            child: const Text('删除'))
+                        : const SizedBox.shrink(),
+                  ],
+                )
+              : const SizedBox.shrink(),
           const SizedBox(width: 24),
           MemoPageMoreOperation(
               showBulkDel: showBulkDel,
@@ -235,11 +265,12 @@ class _MemoPageState extends State<MemoPage> {
           ),
           Expanded(
               child: MemoList(
+                  inputContentIsEmpty: inputContentIsEmpty,
                   selectedIndex: selectedIndex,
                   onSelectedIndex: _setSelectedIndex,
                   showBulkDel: showBulkDel,
                   showSort: showSort,
-                  lists: filteredList as List<MemoListModel>,
+                  lists: filteredList,
                   onBulkDel: _bulkDelMemo,
                   onOrderChanged: _orderChanged,
                   onChanged: _navigateAndDisplaySelection,

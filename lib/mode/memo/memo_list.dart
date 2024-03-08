@@ -7,6 +7,7 @@ import 'memo_models.dart';
 import 'memo_detail.dart';
 
 class MemoList extends StatefulWidget {
+  bool inputContentIsEmpty;
   List<MemoListModel> lists = [];
   void Function(BuildContext context, MemoListModel obj) onChanged;
   void Function(int index) onDeleted;
@@ -18,6 +19,7 @@ class MemoList extends StatefulWidget {
   void Function(String id) onSelectedIndex;
   MemoList(
       {Key? key,
+      required this.inputContentIsEmpty,
       required this.lists,
       required this.onBulkDel,
       required this.onChanged,
@@ -50,7 +52,7 @@ class _MemoListState extends State<MemoList> {
   @override
   Widget build(BuildContext context) {
     return ReorderableListView(
-      buildDefaultDragHandles: widget.showSort,
+      buildDefaultDragHandles: widget.showSort && widget.inputContentIsEmpty,
       padding: const EdgeInsets.all(8),
       children: <Widget>[
         for (int index = 0; index < parentList.length; index++)
