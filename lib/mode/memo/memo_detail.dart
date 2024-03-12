@@ -10,7 +10,7 @@ class MemoDetail extends StatefulWidget {
 }
 
 class _MemoDetailState extends State<MemoDetail> {
-  get oId => widget.obj?.id ?? '';
+  String get oId => widget.obj?.id ?? '';
 
   final idController = TextEditingController(text: '');
   final inputController = TextEditingController(text: '');
@@ -48,7 +48,7 @@ class _MemoDetailState extends State<MemoDetail> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
+              oId.isNotEmpty ? Padding(
                   padding: const EdgeInsets.all(8),
                   child: Text(
                     '时间: $oId',
@@ -57,7 +57,7 @@ class _MemoDetailState extends State<MemoDetail> {
                       color: Colors.grey,
                     ),
                   )
-              ),
+              ) : const SizedBox.shrink(),
               Padding(
                   padding: const EdgeInsets.all(8),
                   child: TextFormField(
