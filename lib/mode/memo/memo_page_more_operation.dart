@@ -46,7 +46,7 @@ class _MemoPageMoreOperationState extends State<MemoPageMoreOperation> {
               value: OperationItem.canDelete,
               child: Row(
                 children: [
-                  const Text('选择'),
+                  const Text('选择', style: TextStyle(fontWeight: FontWeight.normal)),
                   widget.showBulkDel
                       ? const Icon(Icons.check)
                       : const SizedBox.shrink(),
@@ -57,7 +57,7 @@ class _MemoPageMoreOperationState extends State<MemoPageMoreOperation> {
               value: OperationItem.canSort,
               child: Row(
                 children: [
-                  const Text('排序'),
+                  const Text('排序', style: TextStyle(fontWeight: FontWeight.normal)),
                   widget.showSort
                       ? const Icon(Icons.check)
                       : const SizedBox.shrink(),
