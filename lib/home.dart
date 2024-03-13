@@ -5,6 +5,7 @@ import './common_model.dart';
 import 'package:sample_flutter/mode/music/music_page.dart';
 import './mode/notes/notes_page.dart';
 import './mode/memo/memo_page.dart';
+import './mode/qr/qr_page.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage(
@@ -33,6 +34,8 @@ class _MyHomePageState extends State<MyHomePage> {
         const MemoPage()),
     WidgetModel('笔记', const Icon(Icons.edit_note, color: Colors.purple),
         const NotesPage()),
+    WidgetModel('qr', const Icon(Icons.qr_code, color: Colors.purple),
+        const QrPage()),
   ];
 
   @override

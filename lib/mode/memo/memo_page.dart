@@ -73,33 +73,33 @@ class _MemoPageState extends State<MemoPage> {
     var content = result['content'];
     var index = memoList.indexWhere((element) => id != '' && element.id == id);
     if (index != -1) {
-      if (memoList[index].title != title ||
-          memoList[index].content != content) {
-        memoList.removeAt(index);
+      setState(() {
+        if ((memoList[index].title != title ||
+            memoList[index].content != content)) {
+          memoList[index].title = title;
+          memoList[index].content = content;
 
-        StorageSinglePattern().write(
-            'memoList', json.encode(memoList.map((e) => e.toMap()).toList()));
-      }
+          StorageSinglePattern().write(
+              'memoList', json.encode(memoList.map((e) => e.toMap()).toList()));
+        }
+      });
+    } else {
+      setState(() {
+          memoList = [
+            MemoListModel.fromMap({
+              'id': formattedDate,
+              'title': title,
+              'content': content,
+              'date': formattedDate
+            }),
+            ...memoList
+          ];
+
+          StorageSinglePattern().write(
+              'memoList', json.encode(memoList.map((e) => e.toMap()).toList()));
+      });
     }
-    setState(() {
-      if ((index == -1 ||
-              (memoList[index].title != title ||
-                  memoList[index].content != content)) &&
-          (title != '' || content != '')) {
-        memoList = [
-          MemoListModel.fromMap({
-            'id': formattedDate,
-            'title': title,
-            'content': content,
-            'date': formattedDate
-          }),
-          ...memoList
-        ];
 
-        StorageSinglePattern().write(
-            'memoList', json.encode(memoList.map((e) => e.toMap()).toList()));
-      }
-    });
 
     // After the Selection Screen returns a result, hide any previous snackbars
     // and show the new result.
