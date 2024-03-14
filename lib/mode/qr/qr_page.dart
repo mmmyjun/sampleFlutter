@@ -19,6 +19,13 @@ class _QrPageState extends State<QrPage> {
   int errorCorrectionLevel = QrErrorCorrectLevel.M;
   bool gapLess = false;
 
+  get inputContentIsEmpty => inputController.text.isEmpty;
+
+  void clearSearch() {
+    inputController.clear();
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
@@ -39,7 +46,11 @@ class _QrPageState extends State<QrPage> {
   Future<void> _generateQrCode(BuildContext context) async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => QrSettings(qrVersion: qrVersion, errorCorrectionLevel: errorCorrectionLevel, gapLess: gapLess)),
+      MaterialPageRoute(
+          builder: (context) => QrSettings(
+              qrVersion: qrVersion,
+              errorCorrectionLevel: errorCorrectionLevel,
+              gapLess: gapLess)),
     );
 
     // When a BuildContext is used from a StatefulWidget, the mounted property
@@ -47,7 +58,9 @@ class _QrPageState extends State<QrPage> {
     if (!context.mounted) return;
 
     if (result != null) {
-      if (result['qiVersion'] != qrVersion || result['errorCorrectionLevel'] != errorCorrectionLevel || result['gapLess'] != gapLess) {
+      if (result['qiVersion'] != qrVersion ||
+          result['errorCorrectionLevel'] != errorCorrectionLevel ||
+          result['gapLess'] != gapLess) {
         if (result['qiVersion'] != qrVersion) {
           qrVersion = result['qrVersion'];
         }
@@ -58,12 +71,14 @@ class _QrPageState extends State<QrPage> {
           gapLess = result['gapLess'];
         }
         setState(() {});
-        StorageSinglePattern().write('qrInfo', jsonEncode({
-          'qrData': inputOfQrCode,
-          'qrVersion': qrVersion,
-          'errorCorrectionLevel': errorCorrectionLevel,
-          'gapLess': gapLess,
-        }));
+        StorageSinglePattern().write(
+            'qrInfo',
+            jsonEncode({
+              'qrData': inputOfQrCode,
+              'qrVersion': qrVersion,
+              'errorCorrectionLevel': errorCorrectionLevel,
+              'gapLess': gapLess,
+            }));
       }
     }
 
@@ -88,34 +103,52 @@ class _QrPageState extends State<QrPage> {
           child: Row(
             children: [
               Expanded(
-                  child: TextField(
-                controller: inputController,
-                decoration: const InputDecoration(
-                  labelText: '输入内容',
-                  hintText: '输入内容',
+                child: TextField(
+                  controller: inputController,
+                  decoration: InputDecoration(
+                      border: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.purple),
+                      ),
+                      labelText: '请输入关键词: 标题/内容',
+                      suffixIcon: IconButton(
+                          style: ButtonStyle(
+                            foregroundColor: MaterialStateProperty.all(
+                                inputContentIsEmpty
+                                    ? Colors.grey
+                                    : Colors.purple),
+                          ),
+                          onPressed: inputContentIsEmpty ? () {} : clearSearch,
+                          icon: Icon(inputContentIsEmpty
+                              ? Icons.search
+                              : Icons.clear))),
+                  onSubmitted: (value) {
+                    if (inputContentIsEmpty) return;
+                    inputOfQrCode = value;
+                    setState(() {});
+                    StorageSinglePattern().write(
+                        'qrInfo',
+                        jsonEncode({
+                          'qrData': inputOfQrCode,
+                          'qrVersion': qrVersion,
+                          'errorCorrectionLevel': errorCorrectionLevel,
+                          'gapLess': gapLess,
+                        }));
+                  },
                 ),
-                onSubmitted: (value) {
-                  inputOfQrCode = value;
-                  setState(() {});
-                  StorageSinglePattern().write('qrInfo', jsonEncode({
-                    'qrData': inputOfQrCode,
-                    'qrVersion': qrVersion,
-                    'errorCorrectionLevel': errorCorrectionLevel,
-                    'gapLess': gapLess,
-                  }));
-                },
-              )),
+              ),
               ElevatedButton(
                 onPressed: () {
                   inputOfQrCode = inputController.text;
                   setState(() {});
 
-                  StorageSinglePattern().write('qrInfo', jsonEncode({
-                    'qrData': inputOfQrCode,
-                    'qrVersion': qrVersion,
-                    'errorCorrectionLevel': errorCorrectionLevel,
-                    'gapLess': gapLess,
-                  }));
+                  StorageSinglePattern().write(
+                      'qrInfo',
+                      jsonEncode({
+                        'qrData': inputOfQrCode,
+                        'qrVersion': qrVersion,
+                        'errorCorrectionLevel': errorCorrectionLevel,
+                        'gapLess': gapLess,
+                      }));
                 },
                 child: const Text('生成二维码'),
               ),
@@ -124,13 +157,15 @@ class _QrPageState extends State<QrPage> {
         ),
         Expanded(
             child: Center(
-          child: inputOfQrCode.isNotEmpty ? QrImageView(
-            data: inputOfQrCode,
-            size: 200.0,
-            version: qrVersion,
-            errorCorrectionLevel: errorCorrectionLevel,
-            gapless: gapLess,
-          ) : const SizedBox.shrink(),
+          child: inputOfQrCode.isNotEmpty
+              ? QrImageView(
+                  data: inputOfQrCode,
+                  size: 200.0,
+                  version: qrVersion,
+                  errorCorrectionLevel: errorCorrectionLevel,
+                  gapless: gapLess,
+                )
+              : const SizedBox.shrink(),
         )),
       ]),
     );
