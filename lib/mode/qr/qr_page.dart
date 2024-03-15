@@ -159,6 +159,14 @@ class _QrPageState extends State<QrPage> {
             child: Center(
           child: inputOfQrCode.isNotEmpty
               ? QrImageView(
+                  eyeStyle: const QrEyeStyle(
+                    eyeShape: QrEyeShape.square,
+                    color: Colors.purple,
+                  ),
+                  dataModuleStyle: const QrDataModuleStyle(
+                          dataModuleShape: QrDataModuleShape.square,
+                          color: Colors.purple,
+                  ),
                   data: inputOfQrCode,
                   size: 200.0,
                   version: qrVersion,
