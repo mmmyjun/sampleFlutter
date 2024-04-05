@@ -14,9 +14,9 @@ class _NotesPageState extends State<NotesPage> {
       appBar: AppBar(
         title: const Text('笔记'),
       ),
-      body: Column(
+      body: const Column(
         children: [
-          const Center(
+          Center(
             child: Text('这是笔记页面'),
           ),
         ],

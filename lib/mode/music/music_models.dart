@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 /// 歌词
 class LrcModel {
   String lrc;

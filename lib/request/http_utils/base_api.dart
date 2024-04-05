@@ -11,7 +11,7 @@ class HttpUtils {
     _dio.interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
   }
 
-  // HttpUtils().init(baseUrl: 'https://api.example.com');
+  // HttpUtils().init(baseUrl: 'https://media-online.netlify.app');
   void init({String? baseUrl}) {
     _dio.options.baseUrl = baseUrl ?? '';
     // if (interceptors != null && interceptors.isNotEmpty) {

@@ -1,6 +1,3 @@
-import 'package:flutter/material.dart';
-
-
 class MemoListModel {
   String id;
   String title;
