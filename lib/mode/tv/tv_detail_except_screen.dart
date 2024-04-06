@@ -34,7 +34,6 @@ class TvDetailExceptScreenState extends State<TvDetailExceptScreen> {
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
@@ -49,8 +48,7 @@ class TvDetailExceptScreenState extends State<TvDetailExceptScreen> {
       child: Column(
         children: [
           Center(
-            child: Text(
-                detailObjLast.name + '-' + currentLabel),
+            child: Text(detailObjLast.name + '-' + currentLabel),
           ),
           Expanded(
             child: DefaultTabController(
@@ -79,47 +77,43 @@ class TvDetailExceptScreenState extends State<TvDetailExceptScreen> {
                             ),
                             Expanded(
                               child: SingleChildScrollView(
-                                child: Padding(
-                                  padding: EdgeInsets.all(8),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(detailObjLast.name,
-                                          style: const TextStyle(
-                                              fontSize: 24, color: Colors.purpleAccent)),
-                                      Text(
-                                        detailObjLast.totalNumberOfEpisodes,
-                                      ),
-                                      const SizedBox(
-                                        height: 8,
-                                      ),
-                                      Text('又名: ${detailObjLast.subname}'),
-                                      Text('类别: ${detailObjLast.type}'),
-                                      Text(
-                                          '年份: ${detailObjLast.year.toString()}'),
-                                      Text('地区: ${detailObjLast.area}'),
-                                      Text('导演: ${detailObjLast.director}'),
-                                      Text('演员: ${detailObjLast.actor}'),
+                                  child: Padding(
+                                padding: EdgeInsets.all(8),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(detailObjLast.name,
+                                        style: const TextStyle(
+                                            fontSize: 24,
+                                            color: Colors.purpleAccent)),
+                                    Text(
+                                      detailObjLast.totalNumberOfEpisodes,
+                                    ),
+                                    const SizedBox(
+                                      height: 8,
+                                    ),
+                                    Text('又名: ${detailObjLast.subname}'),
+                                    Text('类别: ${detailObjLast.type}'),
+                                    Text(
+                                        '年份: ${detailObjLast.year.toString()}'),
+                                    Text('地区: ${detailObjLast.area}'),
+                                    Text('导演: ${detailObjLast.director}'),
+                                    Text('演员: ${detailObjLast.actor}'),
 
-                                      // Text(
-                                      //     '简介: ${detailObjLast.briefIntroduction.replaceAll(RegExp(r'[<br><br />]'), '')}'),
-                                      Html(
-                                        data: detailObjLast.briefIntroduction,
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ),
+                                    // Text(
+                                    //     '简介: ${detailObjLast.briefIntroduction.replaceAll(RegExp(r'[<br><br />]'), '')}'),
+                                    Html(
+                                      data: detailObjLast.briefIntroduction,
+                                    )
+                                  ],
+                                ),
+                              )),
                             )
                           ],
                         ),
-                        // Row(
-                        //   children: [
                         EpisodeContainer(
                             episodeArr: detailObjLast.dataList,
                             changeIndex: widget.changeIndex)
-                        //   ],
-                        // )
                       ],
                     ),
                   )
@@ -149,9 +143,10 @@ class _EpisodeContainerState extends State<EpisodeContainer> {
     return GridView.builder(
         itemCount: widget.episodeArr.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: MediaQuery.of(context).size.width > 1000
-                ? 12
-                : (MediaQuery.of(context).size.width > 600 ? 6 : 4)),
+          crossAxisCount: MediaQuery.of(context).size.width > 1000
+              ? 12
+              : (MediaQuery.of(context).size.width > 600 ? 6 : 4),
+        ),
         itemBuilder: (_, int index) {
           return InkWell(
             child: GridTile(
@@ -159,17 +154,10 @@ class _EpisodeContainerState extends State<EpisodeContainer> {
               children: [
                 Expanded(
                   child: TextButton(
-                    // iconSize: MediaQuery.of(context).size.width > 1000
-                    //     ? 80
-                    //     : (MediaQuery.of(context).size.width > 600 ? 60 : 30),
                     onPressed: () {
                       print("Press index:$index");
                       widget.changeIndex(index);
-                      // Navigator.of(context).push(MaterialPageRoute(
-                      //     builder: (context) => widget.episodeArr[index].child));
                     },
-                    // icon: widget.episodeArr[index].icon,
-                    // color: Colors.blue,
                     child: Text(widget.episodeArr[index].label),
                   ),
                 ),

@@ -46,7 +46,6 @@ class _TvListState extends State<TvList> {
     if (!context.mounted) return;
 
     if (result != null) {
-      print('从detail返回的消息:$result');
       setState(() {});
     }
 
@@ -66,67 +65,157 @@ class _TvListState extends State<TvList> {
   Widget build(BuildContext context) {
     return TabBarView(
         children: widget.lists
-            .map((e) => Column(
-                  children: [
-                    ...e.data.map((f) {
-                      String baseSrc = base64Encode(
-                          (utf8.encode(e.category + '|' + f.id.toString())));
-                      String posterSrc = getPosterUrl(baseSrc);
-                      return Column(children: [
-                        InkWell(
-                          onTap: () {
-                            print('card:tap:${f.name},,,${baseSrc}');
-                            print('card.getBotaUrl.${getBotaUrl(baseSrc)}');
-                            print('card.posterSrc.${posterSrc}');
-                            _goToDetail(context, getBotaUrl(baseSrc));
-                          },
-                          child: Card(
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.all(8),
-                                  child: Image.network(
-                                    posterSrc,
-                                    width: 50,
-                                    height: 50,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (BuildContext context,
-                                        Object exception,
-                                        StackTrace? stackTrace) {
-                                      return const Text('暂无图片',
-                                          style: TextStyle(fontSize: 16));
-                                    },
+            .map((e) => Container(
+            // crossAxisAlignment: CrossAxisAlignment.start,
+                  child:
+                    GridView.builder(
+                        itemCount: e.data.length,
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          // 设置每子元素的大小（宽高比）
+                            childAspectRatio: 2,
+                            // 元素的左右的 距离
+                            crossAxisSpacing: 24,
+                            // 子元素上下的 距离
+                            mainAxisSpacing: 12,
+                            crossAxisCount:
+                                MediaQuery.of(context).size.width > 1000
+                                    ? 3
+                                    : (MediaQuery.of(context).size.width > 500
+                                        ? 2
+                                        : 1)),
+                        itemBuilder: (_, int index) {
+                          TvListModel f = e.data[index];
+                          String baseSrc = base64Encode((utf8
+                              .encode('${e.category}|${f.id}')));
+                          String posterSrc = getPosterUrl(baseSrc);
+                          // return Text(f.name);
+                          return InkWell(
+                            onTap: () {
+                              print('card:tap:${f.name},,,${baseSrc}');
+                              print(
+                                  'card.getBotaUrl.${getBotaUrl(baseSrc)}');
+                              print('card.posterSrc.${posterSrc}');
+                              _goToDetail(context, getBotaUrl(baseSrc));
+                            },
+                            child: Card(
+                              child: Row(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.all(8),
+                                    child: Image.network(
+                                      posterSrc,
+                                      width:  MediaQuery.of(context).size.width > 1000
+                                          ? 120
+                                          : (MediaQuery.of(context).size.width > 600
+                                          ? 90
+                                          : 80),
+                                      // height: 50,
+                                      fit: BoxFit.cover,
+                                      errorBuilder:
+                                          (BuildContext context,
+                                          Object exception,
+                                          StackTrace? stackTrace) {
+                                        return const Text('暂无图片',
+                                            style: TextStyle(
+                                                fontSize: 16));
+                                      },
+                                    ),
                                   ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.all(16),
-                                  child: Column(
-                                    crossAxisAlignment:
+                                  Expanded(
+                                    child: Padding(
+                                      padding: EdgeInsets.all(8),
+                                      child: Column(
+                                        crossAxisAlignment:
                                         CrossAxisAlignment.start,
-                                    children: [
-                                      Text(f.name,
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.purpleAccent)),
-                                      Row(
                                         children: [
-                                          Text(f.type),
-                                          const SizedBox(width: 8),
-                                          Text(f.note)
+                                          Text(f.name,
+                                              style: const TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors
+                                                      .purpleAccent)),
+                                          Row(
+                                            children: [
+                                              Text(f.type),
+                                              const SizedBox(width: 8),
+                                              Text(f.note)
+                                            ],
+                                          ),
+                                          Text(f.last)
                                         ],
                                       ),
-                                      Text(f.last)
-                                    ],
-                                  ),
-                                )
-                              ],
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                        )
-                      ]);
-                    }).toList()
-                  ],
+                          );
+                        })
+
                 ))
             .toList());
+    // return TabBarView(
+    //     children: widget.lists
+    //         .map((e) => Column(
+    //               children: [
+    //                 ...e.data.map((f) {
+    //                   String baseSrc = base64Encode(
+    //                       (utf8.encode(e.category + '|' + f.id.toString())));
+    //                   String posterSrc = getPosterUrl(baseSrc);
+    //                   return Column(children: [
+    //                     InkWell(
+    //                       onTap: () {
+    //                         print('card:tap:${f.name},,,${baseSrc}');
+    //                         print('card.getBotaUrl.${getBotaUrl(baseSrc)}');
+    //                         print('card.posterSrc.${posterSrc}');
+    //                         _goToDetail(context, getBotaUrl(baseSrc));
+    //                       },
+    //                       child: Card(
+    //                         child: Row(
+    //                           children: [
+    //                             Padding(
+    //                               padding: EdgeInsets.all(8),
+    //                               child: Image.network(
+    //                                 posterSrc,
+    //                                 width: 50,
+    //                                 height: 50,
+    //                                 fit: BoxFit.cover,
+    //                                 errorBuilder: (BuildContext context,
+    //                                     Object exception,
+    //                                     StackTrace? stackTrace) {
+    //                                   return const Text('暂无图片',
+    //                                       style: TextStyle(fontSize: 16));
+    //                                 },
+    //                               ),
+    //                             ),
+    //                             Padding(
+    //                               padding: EdgeInsets.all(16),
+    //                               child: Column(
+    //                                 crossAxisAlignment:
+    //                                     CrossAxisAlignment.start,
+    //                                 children: [
+    //                                   Text(f.name,
+    //                                       style: TextStyle(
+    //                                           fontSize: 16,
+    //                                           color: Colors.purpleAccent)),
+    //                                   Row(
+    //                                     children: [
+    //                                       Text(f.type),
+    //                                       const SizedBox(width: 8),
+    //                                       Text(f.note)
+    //                                     ],
+    //                                   ),
+    //                                   Text(f.last)
+    //                                 ],
+    //                               ),
+    //                             )
+    //                           ],
+    //                         ),
+    //                       ),
+    //                     )
+    //                   ]);
+    //                 }).toList()
+    //               ],
+    //             ))
+    //         .toList());
   }
 }
