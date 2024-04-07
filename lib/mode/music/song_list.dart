@@ -47,10 +47,9 @@ class _SongListState extends State<SongList> {
                 Image.network(parentList[index].cover,
                     width: 50, height: 50, fit: BoxFit.cover,
                   errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                    return const Text('暂无图片', style: TextStyle(fontSize: 16));
+                    return const Text('暂无图片', style: TextStyle(fontSize: 12));
                   },
                 ),
-                // 捕获上面这句图片报错的异常，怎么重写?
                 Text(parentList[index].songName,
                     textAlign: TextAlign.left,
                     style: TextStyle(

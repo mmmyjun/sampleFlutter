@@ -22,7 +22,6 @@ class _TvPageState extends State<TvPage> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    HttpUtils().init(baseUrl: 'https://media-online.netlify.app');
   }
 
   @override

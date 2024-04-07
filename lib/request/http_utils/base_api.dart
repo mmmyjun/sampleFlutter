@@ -13,11 +13,16 @@ class HttpUtils {
 
   // HttpUtils().init(baseUrl: 'https://media-online.netlify.app');
   void init({String? baseUrl}) {
-    _dio.options.baseUrl = baseUrl ?? '';
     // if (interceptors != null && interceptors.isNotEmpty) {
     //   _dio.interceptors.addAll(interceptors);
     // }
+    _dio.options.baseUrl = baseUrl ?? 'https://media-online.netlify.app';
+
     _dio.interceptors.add(ResponseInterceptor());
+  }
+
+  void setBaseUrl(String baseUrl) {
+    _dio.options.baseUrl = baseUrl;
   }
 
   // HttpUtils().get('/path', params: {'id': 1}, options: Options(baseUrl: 'https://api.example.com'));

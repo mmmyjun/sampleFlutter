@@ -66,7 +66,6 @@ class _TvListState extends State<TvList> {
     return TabBarView(
         children: widget.lists
             .map((e) => Container(
-            // crossAxisAlignment: CrossAxisAlignment.start,
                   child:
                     GridView.builder(
                         itemCount: e.data.length,
