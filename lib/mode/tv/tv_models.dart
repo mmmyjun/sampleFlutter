@@ -95,28 +95,28 @@ class TvDetailEpisodesModel {
 }
 
 class TvDetailModel {
-  String? pic;
-  String? name;
-  String? totalNumberOfEpisodes;
+  String pic;
+  String name;
+  String totalNumberOfEpisodes;
   String? subname;
-  String? type;
-  int? year;
+  String type;
+  int year;
   String? area;
-  String? director;
-  String? actor;
+  String director;
+  String actor;
   String? briefIntroduction;
   List<TvDetailEpisodesModel> dataList;
 
   TvDetailModel(
-      {this.pic,
-      this.name,
-      this.totalNumberOfEpisodes,
+      {required this.pic,
+      required this.name,
+      required this.totalNumberOfEpisodes,
       this.subname,
-      this.type,
-      this.year,
+      required this.type,
+      required this.year,
       this.area,
-      this.director,
-      this.actor,
+      required this.director,
+      required this.actor,
       this.briefIntroduction,
       required this.dataList});
 

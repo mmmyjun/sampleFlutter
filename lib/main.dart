@@ -1,13 +1,15 @@
-
 import 'package:flutter/material.dart';
+import 'package:media_kit/media_kit.dart'; // Provides [Player], [Media], [Playlist] etc.
 
 import './home.dart';
 
 import './request/http_utils/base_api.dart';
 
 void main() {
-  HttpUtils().init(); // 初始化网络请求
+  WidgetsFlutterBinding.ensureInitialized();
+  MediaKit.ensureInitialized();
 
+  HttpUtils().init(); // 初始化网络请求
   runApp(const MyApp());
 }
 class MyApp extends StatefulWidget {

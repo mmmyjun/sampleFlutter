@@ -44,13 +44,15 @@ class _TvDetailState extends State<TvDetail> {
       ? detailList[currentIndex].url
       : '';
 
+  String loadingText = 'loading...';
+
   Future<void> getData() async {
-    EasyLoading.show(status: 'loading...');
+    EasyLoading.show(status: loadingText);
 
     TvApi().getVideoInfoById(parentId).then((value) {
       print('tvapigetVideoInfoById res::$value');
       EasyLoading.dismiss();
-      // hasSearch = true;
+      loadingText = '';
 
       int code = value['code'];
       // String msg = value['msg'];
@@ -70,6 +72,8 @@ class _TvDetailState extends State<TvDetail> {
     }).catchError((onError) {
       print('tvapigetVideoInfoById Error:$onError');
       EasyLoading.dismiss();
+      loadingText = '';
+      currentIndex = -1;
     });
   }
 
@@ -82,8 +86,6 @@ class _TvDetailState extends State<TvDetail> {
   @override
   void initState() {
     super.initState();
-
-    MediaKit.ensureInitialized();
 
     getData();
   }
@@ -100,23 +102,21 @@ class _TvDetailState extends State<TvDetail> {
             icon: const Icon(Icons.arrow_back),
           ),
         ),
-        body: Column(
-          children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height / 2,
-              child: currentUrl != ''
-                  ? MyScreen(currentUrl: currentUrl)
-                  : const SizedBox.shrink(),
-            ),
-            Expanded(
-              child: currentIndex >= 0 && detailObjLast != '' && detailList.length > 0
-                  ? TvDetailExceptScreen(
-                      detailData: detailObjLast,
-                      currentIndex: currentIndex,
-                      changeIndex: changeIndex)
-                  : const SizedBox.shrink(),
-            )
-          ],
-        ));
+        body: loadingText.isNotEmpty
+            ? const Text('加载中..')
+            : currentUrl.isNotEmpty
+                ? Column(
+                    children: [
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height / 2,
+                          child: MyScreen(currentUrl: currentUrl)),
+                      Expanded(
+                          child: TvDetailExceptScreen(
+                              detailData: detailObjLast,
+                              currentIndex: currentIndex,
+                              changeIndex: changeIndex))
+                    ],
+                  )
+                : const Text('暂无数据'));
   }
 }

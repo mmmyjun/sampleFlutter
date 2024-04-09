@@ -39,12 +39,13 @@ class MyScreenState extends State<MyScreen> {
     super.initState();
     // Play a [Media] or [Playlist].
     player.open(Media(parentUrl));
+    // player.open(Media('https://spacedeta-1-f1000878.deta.app/api/video/hls/pure/aHR0cHM6Ly95enp5MS5wbGF5LWNkbjE2LmNvbS8yMDIzMTAyNi8yNTM2NF80OTgwMjJjZi9pbmRleC5tM3U4.m3u8'));
+    // https://spacedeta-1-f1000878.deta.app/api/video/hls/pure/aHR0cHM6Ly95enp5MS5wbGF5LWNkbjE2LmNvbS8yMDIzMTAyNi8yNTM2NF80OTgwMjJjZi9pbmRleC5tM3U4.m3u8
 
   }
 
   @override
   void didUpdateWidget(covariant oldWidget) {
-    // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
 
     print('oldWidget url: $oldWidget');

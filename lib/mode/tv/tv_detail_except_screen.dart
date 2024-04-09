@@ -92,7 +92,7 @@ class TvDetailExceptScreenState extends State<TvDetailExceptScreen> {
                                     const SizedBox(
                                       height: 8,
                                     ),
-                                    Text('又名: ${detailObjLast.subname}'),
+                                    detailObjLast.subname.isNotEmpty ? Text('又名: ${detailObjLast.subname}') : const SizedBox.shrink(),
                                     Text('类别: ${detailObjLast.type}'),
                                     Text(
                                         '年份: ${detailObjLast.year.toString()}'),

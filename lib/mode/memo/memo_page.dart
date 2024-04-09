@@ -84,7 +84,8 @@ class _MemoPageState extends State<MemoPage> {
         }
       });
     } else {
-      setState(() {
+      if (!title.isEmpty || !content.isEmpty) {
+        setState(() {
           memoList = [
             MemoListModel.fromMap({
               'id': formattedDate,
@@ -97,7 +98,8 @@ class _MemoPageState extends State<MemoPage> {
 
           StorageSinglePattern().write(
               'memoList', json.encode(memoList.map((e) => e.toMap()).toList()));
-      });
+        });
+      }
     }
 
 
