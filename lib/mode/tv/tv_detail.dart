@@ -43,6 +43,9 @@ class _TvDetailState extends State<TvDetail> {
   get currentUrl => currentIndex >= 0 && detailList.length > 0
       ? detailList[currentIndex].url
       : '';
+  get currentLabel => currentIndex >= 0 && detailList.length > 0
+      ? detailList[currentIndex].label
+      : '';
 
   String loadingText = 'loading...';
 
@@ -94,7 +97,7 @@ class _TvDetailState extends State<TvDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('详情'),
+          title: Text(detailObjLast.name + '-' + currentLabel, style: const TextStyle(fontSize: 24)),
           leading: IconButton(
             onPressed: () {
               Navigator.pop(context, {});
@@ -108,7 +111,7 @@ class _TvDetailState extends State<TvDetail> {
                 ? Column(
                     children: [
                       SizedBox(
-                          height: MediaQuery.of(context).size.width > 600 ? 500 : 300,
+                          height: MediaQuery.of(context).size.width > 600 ? 400 : 300,
                           child: MyScreen(currentUrl: currentUrl)),
                       Expanded(
                           child: TvDetailExceptScreen(
