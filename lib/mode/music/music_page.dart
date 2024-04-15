@@ -24,10 +24,10 @@ class _MusicPageState extends State<MusicPage> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    EasyLoading.dismiss();
-  }
+  // @override
+  // void dispose() {
+  //   EasyLoading.dismiss();
+  // }
 
   final inputController = TextEditingController(text: '');
   List<SongListModel> songList = [];
@@ -63,7 +63,7 @@ class _MusicPageState extends State<MusicPage> {
         var songUrl = 'https://media-online.netlify.app/${song['url']}';
         var artist = song['artist'];
         var cover = 'https://media-online.netlify.app/${song['poster']}';
-        print('cover::$cover');
+        // print('cover::$cover');
         List<LrcModel> lrcArr = [];
         var isPlaying = false;
         var onChanged = _onMusicChanged;

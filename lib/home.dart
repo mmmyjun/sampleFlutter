@@ -27,6 +27,8 @@ class _MyHomePageState extends State<MyHomePage> {
   int currentPageIndex = 0;
 
   List<WidgetModel> widgetArr = [
+    WidgetModel('影视', const Icon(Icons.tv, color: Colors.purple),
+        const TvPage()),
     WidgetModel('音乐', const Icon(Icons.music_video, color: Colors.purple),
         const MusicPage()),
     WidgetModel(
@@ -37,8 +39,6 @@ class _MyHomePageState extends State<MyHomePage> {
     //     const NotesPage()),
     WidgetModel('qr', const Icon(Icons.qr_code, color: Colors.purple),
         const QrPage()),
-    WidgetModel('影视', const Icon(Icons.tv, color: Colors.purple),
-        const TvPage()),
   ];
 
   @override
