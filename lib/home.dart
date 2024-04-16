@@ -7,6 +7,7 @@ import './mode/notes/notes_page.dart';
 import './mode/memo/memo_page.dart';
 import './mode/qr/qr_page.dart';
 import './mode/tv/tv_page.dart';
+import './mode/file/picker_file_page.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage(
@@ -39,6 +40,8 @@ class _MyHomePageState extends State<MyHomePage> {
     //     const NotesPage()),
     WidgetModel('qr', const Icon(Icons.qr_code, color: Colors.purple),
         const QrPage()),
+    WidgetModel('文件', const Icon(Icons.file_copy_outlined, color: Colors.purple),
+        const PickerFilePage()),
   ];
 
   @override
