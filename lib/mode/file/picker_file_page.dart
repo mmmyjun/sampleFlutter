@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 
+import './picker_file_single.dart';
+import './picker_file_multiple.dart';
+import './picker_file_multiple_extension.dart';
+import './picker_file_directory.dart';
+
 class PickerFilePage extends StatefulWidget {
   const PickerFilePage({Key? key}) : super(key: key);
 
@@ -15,34 +20,24 @@ class _PickerFilePageState extends State<PickerFilePage> {
       appBar: AppBar(
         title: const Text('文件'),
       ),
-      body: Column(
-        children: [
-          Center(
-            child: Column(
-              children: [
-                ElevatedButton(
-                  onPressed: () async {
-                    FilePickerResult? result = await FilePicker.platform.pickFiles();
-                    if (result != null) {
-                      print(result.files.single.path);
-
-                      PlatformFile file = result.files.first;
-                      print(file.name);
-                      print(file.bytes);
-                      print(file.size);
-                      print(file.extension);
-                      print(file.path);
-                    } else {
-                      // User canceled the picker
-                    }
-                  },
-                  child: const Text('选择文件'),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+      body: PickerFileSingle(),
+      // body: Column(
+      //   children: [
+      //     Center(
+      //       child: Column(
+      //         children: [
+      //           // SizedBox(
+      //           //   height: 20,
+      //           //   child: PickerFileSingle(),
+      //           // ),
+      //           // PickerFileMultiple(),
+      //           // PickerFileMultipleWithExtension(),
+      //           // PickerFileDirectory(),
+      //         ],
+      //       ),
+      //     ),
+      //   ],
+      // ),
     );
   }
 }
