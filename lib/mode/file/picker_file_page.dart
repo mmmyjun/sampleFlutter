@@ -6,6 +6,8 @@ import './picker_file_multiple.dart';
 import './picker_file_multiple_extension.dart';
 import './picker_file_directory.dart';
 
+import './pdf/picker_file_pdf.dart';
+
 class PickerFilePage extends StatefulWidget {
   const PickerFilePage({Key? key}) : super(key: key);
 
@@ -20,7 +22,13 @@ class _PickerFilePageState extends State<PickerFilePage> {
       appBar: AppBar(
         title: const Text('文件'),
       ),
-      body: PickerFileSingle(),
+      // body: PickerFileSingle(),
+      // body: PickerFileMultiple(),
+      // body: PickerFileMultipleWithExtension(),
+      // body: PickerFileDirectory(),
+
+      body: PickerFilePdf(),
+
       // body: Column(
       //   children: [
       //     Center(

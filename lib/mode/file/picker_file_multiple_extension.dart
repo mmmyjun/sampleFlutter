@@ -19,6 +19,7 @@ class _PickerFileMultipleWithExtensionState extends State<PickerFileMultipleWith
               type: FileType.custom,
               allowedExtensions: ['jpg', 'pdf', 'doc'],
             );
+            print(result);
           },
           child: const Text('选择多个文件附带后缀'),
         ),

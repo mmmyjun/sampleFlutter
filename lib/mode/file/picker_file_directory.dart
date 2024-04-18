@@ -20,6 +20,7 @@ class _PickerFileDirectoryState extends State<PickerFileDirectory> {
             if (selectedDirectory == null) {
               // User canceled the picker
             }
+            print(selectedDirectory);
           },
           child: const Text('选择文件夹'),
         ),
