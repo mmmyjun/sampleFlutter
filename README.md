@@ -1,6 +1,4 @@
 # sample_flutter
-
-module: music、memo
-
+module: tv、music、memo、qr、file、Photo
 
 

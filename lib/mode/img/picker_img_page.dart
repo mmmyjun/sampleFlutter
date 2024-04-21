@@ -12,21 +12,6 @@ class PickerImgPage extends StatefulWidget {
 }
 
 class _PickerImgPageState extends State<PickerImgPage> {
-  // Future<void> getLostData() async {
-  //   final ImagePicker picker = ImagePicker();
-  //   final LostDataResponse response = await picker.retrieveLostData();
-  //   if (response.isEmpty) {
-  //     return;
-  //   }
-  //   final List<XFile>? files = response.files;
-  //   if (files != null) {
-  //     // _handleLostFiles(files);
-  //   } else {
-  //     // _handleError(response.exception);
-  //   }
-  //   print(files);
-  // }
-
   Uint8List? bytes;
   void setBytes(value) {
     setState(() {
@@ -47,20 +32,22 @@ class _PickerImgPageState extends State<PickerImgPage> {
             onPressed: () async {
               final ImagePicker picker = ImagePicker();
               // print(picker);
+
               // Pick an image.
               final XFile? image =
                   await picker.pickImage(source: ImageSource.gallery);
-              print(image);
-              setBytes(File(image!.path).readAsBytesSync());
+              setBytes(await image!.readAsBytes());
 
 
               // Capture a photo.
               // final XFile? photo =
               //     await picker.pickImage(source: ImageSource.camera);
+              // print(photo);
 
               // Pick a video.
               // final XFile? galleryVideo =
               //     await picker.pickVideo(source: ImageSource.gallery);
+              // print(galleryVideo);
 
               // Capture a video.
               // final XFile? cameraVideo =
@@ -68,6 +55,7 @@ class _PickerImgPageState extends State<PickerImgPage> {
 
               // Pick multiple images.
               // final List<XFile> images = await picker.pickMultiImage();
+              // print(images);
 
               // Pick singe image or video.
               // final XFile? media = await picker.pickMedia();

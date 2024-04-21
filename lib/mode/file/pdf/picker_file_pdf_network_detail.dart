@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-/// Represents PickerFilePdf for Navigation
-class PickerFilePdf extends StatefulWidget {
+/// Represents PickerFilePDFNetworkDetail for Navigation
+class PickerFilePDFNetworkDetail extends StatefulWidget {
   PdfViewerController controller;
-  PickerFilePdf({
+  PickerFilePDFNetworkDetail({
     Key? key,
     required this.controller,
   }) : super(key: key);
 
   @override
-  _PickerFilePdf createState() => _PickerFilePdf();
+  _PickerFilePDFNetworkDetail createState() => _PickerFilePDFNetworkDetail();
 }
 
-class _PickerFilePdf extends State<PickerFilePdf> {
+class _PickerFilePDFNetworkDetail extends State<PickerFilePDFNetworkDetail> {
   final GlobalKey<SfPdfViewerState> _pdfViewerKey = GlobalKey();
 
   @override
@@ -26,6 +26,7 @@ class _PickerFilePdf extends State<PickerFilePdf> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Syncfusion Flutter PDF Viewer'),
+        automaticallyImplyLeading: false,
         actions: <Widget>[
           IconButton(
             icon: const Icon(
@@ -47,6 +48,7 @@ class _PickerFilePdf extends State<PickerFilePdf> {
         canShowPaginationDialog: true,
         canShowPageLoadingIndicator: true,
         controller: widget.controller,
+        canShowScrollHead: true,
         onDocumentLoaded: (PdfDocumentLoadedDetails details) {
           widget.controller.jumpToPage(20);
         },
