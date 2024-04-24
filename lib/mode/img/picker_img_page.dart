@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:photo_view/photo_view.dart';
 
 class PickerImgPage extends StatefulWidget {
   const PickerImgPage({Key? key}) : super(key: key);
@@ -27,7 +28,6 @@ class _PickerImgPageState extends State<PickerImgPage> {
       ),
       body: Column(
         children: [
-          bytes != null ? Image.memory(bytes!) : SizedBox.shrink(),
           ElevatedButton(
             onPressed: () async {
               final ImagePicker picker = ImagePicker();
@@ -36,6 +36,7 @@ class _PickerImgPageState extends State<PickerImgPage> {
               // Pick an image.
               final XFile? image =
                   await picker.pickImage(source: ImageSource.gallery);
+              print('path:::${image!.path}');
               setBytes(await image!.readAsBytes());
 
 
@@ -78,6 +79,19 @@ class _PickerImgPageState extends State<PickerImgPage> {
             },
             child: const Text('选择图片'),
           ),
+          bytes != null ? Image.memory(bytes!, width: 100, height: 100,) : SizedBox.shrink(),
+          TextButton(
+              onPressed: (){
+                print('预览图片=====');
+              },
+              child: Text('预览图片')
+          ),
+          Expanded(
+            child: bytes != null ? PhotoView(
+              imageProvider: MemoryImage(bytes!),
+            ) : SizedBox.shrink(),
+          )
+
         ],
       ),
     );

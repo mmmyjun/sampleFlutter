@@ -5,6 +5,10 @@ import './home.dart';
 
 import './request/http_utils/base_api.dart';
 
+import './mode/tv/tv_video_player.dart';
+
+import 'dart:io';
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   MediaKit.ensureInitialized();
@@ -38,6 +42,7 @@ class _MyAppState extends State<MyApp> {
       ),
       themeMode: themeMode,
       home: MyHomePage(title: 'Home Page', themeMode: themeMode, setThemeMode: setThemeMode),
+      // home: Platform.isAndroid || Platform.isIOS  ? TvVideoPlayer() : MyHomePage(title: 'Home Page', themeMode: themeMode, setThemeMode: setThemeMode),
     );
   }
 }
