@@ -72,6 +72,8 @@ flutter:
     - assets/flutter-succinctly.pdf
     - assets/bee.mp4
     - assets/dog.jpg
+    - assets/yellowFlower.jpeg
+    - assets/ha.jpg
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

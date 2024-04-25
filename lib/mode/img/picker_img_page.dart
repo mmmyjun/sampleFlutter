@@ -5,6 +5,9 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:photo_view/photo_view.dart';
 
+import './preview/picker_preview_photo_single.dart';
+import './preview/picker_preview_photo_multiple.dart';
+
 class PickerImgPage extends StatefulWidget {
   const PickerImgPage({Key? key}) : super(key: key);
 
@@ -13,12 +16,7 @@ class PickerImgPage extends StatefulWidget {
 }
 
 class _PickerImgPageState extends State<PickerImgPage> {
-  Uint8List? bytes;
-  void setBytes(value) {
-    setState(() {
-      bytes = value;
-    });
-  }
+  int selectedOne = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -28,70 +26,22 @@ class _PickerImgPageState extends State<PickerImgPage> {
       ),
       body: Column(
         children: [
-          ElevatedButton(
-            onPressed: () async {
-              final ImagePicker picker = ImagePicker();
-              // print(picker);
-
-              // Pick an image.
-              final XFile? image =
-                  await picker.pickImage(source: ImageSource.gallery);
-              print('path:::${image!.path}');
-              setBytes(await image!.readAsBytes());
-
-
-              // Capture a photo.
-              // final XFile? photo =
-              //     await picker.pickImage(source: ImageSource.camera);
-              // print(photo);
-
-              // Pick a video.
-              // final XFile? galleryVideo =
-              //     await picker.pickVideo(source: ImageSource.gallery);
-              // print(galleryVideo);
-
-              // Capture a video.
-              // final XFile? cameraVideo =
-              //     await picker.pickVideo(source: ImageSource.camera);
-
-              // Pick multiple images.
-              // final List<XFile> images = await picker.pickMultiImage();
-              // print(images);
-
-              // Pick singe image or video.
-              // final XFile? media = await picker.pickMedia();
-
-              // Pick multiple images and videos.
-              // final List<XFile> medias = await picker.pickMultipleMedia();
-
-
-              // final LostDataResponse response = await picker.retrieveLostData();
-              // if (response.isEmpty) {
-              //   return;
-              // }
-              // final List<XFile>? files = response.files;
-              // if (files != null) {
-              //   // _handleLostFiles(files);
-              // } else {
-              //   // _handleError(response.exception);
-              // }
-              // print(files);
-            },
-            child: const Text('选择图片'),
-          ),
-          bytes != null ? Image.memory(bytes!, width: 100, height: 100,) : SizedBox.shrink(),
-          TextButton(
-              onPressed: (){
-                print('预览图片=====');
-              },
-              child: Text('预览图片')
+          DropdownButton(
+              value: selectedOne,
+              items: [
+                DropdownMenuItem(child: Text('单个图片'), value: 1),
+                DropdownMenuItem(child: Text('多个图片'), value: 2),
+              ],
+              onChanged: (value) {
+                print('选择图片=====$value');
+                setState(() {
+                  selectedOne = value as int;
+                });
+              }
           ),
           Expanded(
-            child: bytes != null ? PhotoView(
-              imageProvider: MemoryImage(bytes!),
-            ) : SizedBox.shrink(),
+            child: selectedOne == 1 ? PickerPreviewPhotoSingle() : PickerPreviewPhotoMultiple(),
           )
-
         ],
       ),
     );
