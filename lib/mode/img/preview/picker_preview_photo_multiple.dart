@@ -30,7 +30,7 @@ class _PickerPreviewPhotoMultipleState extends State<PickerPreviewPhotoMultiple>
          onPressed: () {
            print('多图片选择');
          },
-         child: Text('多图片'),
+         child: Text('多图片：windows不太好切换，需要按住shift+鼠标滚轮'),
        ),
         Expanded(
           child: PickerPreviewPhotoMultipleGallery(galleryItems: [

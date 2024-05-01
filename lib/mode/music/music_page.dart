@@ -50,7 +50,7 @@ class _MusicPageState extends State<MusicPage> {
     songList = [];
 
     SongApi().getAllSongInfo(inputController.text).then((value) {
-      print(value);
+      print('request list success:::$value');
       EasyLoading.dismiss();
       hasSearch = true;
 
@@ -60,9 +60,9 @@ class _MusicPageState extends State<MusicPage> {
         var song = data[i];
         var songId = song['id'];
         var songName = song['name'];
-        var songUrl = 'https://media-online.netlify.app/${song['url']}';
+        var songUrl = 'https://media-online.netlify.app${song['url']}';
         var artist = song['artist'];
-        var cover = 'https://media-online.netlify.app/${song['poster']}';
+        var cover = 'https://media-online.netlify.app${song['poster']}';
         // print('cover::$cover');
         List<LrcModel> lrcArr = [];
         var isPlaying = false;
@@ -79,6 +79,9 @@ class _MusicPageState extends State<MusicPage> {
         ));
       }
       setState(() {});
+    }).catchError((e){
+      EasyLoading.dismiss();
+      print('request list error:::$e');
     });
   }
 
