@@ -9,6 +9,7 @@ import './mode/qr/qr_page.dart';
 import './mode/tv/tv_page.dart';
 import './mode/file/picker_file_page.dart';
 import './mode/img/picker_img_page.dart';
+import './mode/swiper/swiper_card_page.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage(
@@ -45,6 +46,9 @@ class _MyHomePageState extends State<MyHomePage> {
         const PickerFilePage()),
     WidgetModel('相册', const Icon(Icons.camera, color: Colors.purple),
         const PickerImgPage()),
+    WidgetModel('轮播图', const Icon(Icons.swipe_rounded, color: Colors.purple),
+      const SwiperCardPage(),
+    ),
   ];
 
   @override
