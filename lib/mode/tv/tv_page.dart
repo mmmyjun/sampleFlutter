@@ -58,6 +58,9 @@ class _TvPageState extends State<TvPage> with TickerProviderStateMixin {
       print('tvapi data:::$lists');
 
       setState(() {});
+    }).catchError((e){
+      EasyLoading.dismiss();
+      print('request list error:::$e');
     });
   }
 

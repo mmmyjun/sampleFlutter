@@ -21,7 +21,7 @@ class _SwiperCardPageState extends State<SwiperCardPage> {
         child: Column(
           children: [
             SizedBox(
-              height: Platform.isAndroid || Platform.isIOS ?  300 : MediaQuery.of(context).size.height - 200,
+              height: Platform.isAndroid || Platform.isIOS ?  300 : MediaQuery.of(context).size.height - 100,
               child: SwiperCardList(),
             ),
             Expanded(

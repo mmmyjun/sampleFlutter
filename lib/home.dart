@@ -140,17 +140,12 @@ class _MyHomePageState extends State<MyHomePage> {
               decoration: BoxDecoration(
                 color: Colors.purple,
               ),
-              child: Text(
-                'Drawer Header',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
+              child: Center(
+                child: CircleAvatar(
+                  radius: 50,
+                  backgroundImage: AssetImage('assets/dog.jpg'),
                 ),
               ),
-            ),
-            ListTile(
-              leading: Icon(Icons.message),
-              title: Text('Messages'),
             ),
             ListTile(
               leading: Icon(Icons.account_circle),
