@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 
 import './common_model.dart';
@@ -10,6 +12,7 @@ import './mode/tv/tv_page.dart';
 import './mode/file/picker_file_page.dart';
 import './mode/img/picker_img_page.dart';
 import './mode/swiper/swiper_card_page.dart';
+import './mode/chart/echart/echart_page.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage(
@@ -49,6 +52,11 @@ class _MyHomePageState extends State<MyHomePage> {
     WidgetModel('轮播图', const Icon(Icons.swipe_rounded, color: Colors.purple),
       const SwiperCardPage(),
     ),
+    // Platform().isAndroid || Platform().isIOS
+    //     ? WidgetModel('图表', const Icon(Icons.bar_chart, color: Colors.purple),
+    //         const EchartPage())
+    //     : WidgetModel('图表', const Icon(Icons.bar_chart, color: Colors.purple),
+    //         const EchartPage()),
   ];
 
   @override

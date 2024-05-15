@@ -21,3 +21,25 @@ class WidgetModel {
     'child': child,
   };
 }
+
+/// label value model
+class LabelValueModel {
+  String label;
+  String value;
+
+  LabelValueModel({required this.label, required this.value});
+
+  factory LabelValueModel.fromMap(Map<String, dynamic> map) {
+    return LabelValueModel(
+      label: map['label'],
+      value: map['value']
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'label': label,
+      'value': value
+    };
+  }
+}
