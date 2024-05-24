@@ -1,5 +1,4 @@
-import 'dart:html';
-
+import 'dart:io';
 import 'package:flutter/material.dart';
 
 import './common_model.dart';
@@ -52,11 +51,9 @@ class _MyHomePageState extends State<MyHomePage> {
     WidgetModel('轮播图', const Icon(Icons.swipe_rounded, color: Colors.purple),
       const SwiperCardPage(),
     ),
-    // Platform().isAndroid || Platform().isIOS
-    //     ? WidgetModel('图表', const Icon(Icons.bar_chart, color: Colors.purple),
-    //         const EchartPage())
-    //     : WidgetModel('图表', const Icon(Icons.bar_chart, color: Colors.purple),
-    //         const EchartPage()),
+    Platform.isAndroid || Platform.isIOS ? WidgetModel('图表', const Icon(Icons.bar_chart, color: Colors.purple),
+        const EchartPage()) : WidgetModel('图表', const Icon(Icons.bar_chart, color: Colors.purple),
+        const EchartPage()),
   ];
 
   @override
