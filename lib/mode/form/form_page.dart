@@ -16,7 +16,7 @@ class _FormPageState extends State<FormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('文件'),
+        title: const Text('表单'),
       ),
       body: Column(
         children: [
@@ -24,7 +24,7 @@ class _FormPageState extends State<FormPage> {
               value: selectedOne,
               items: [
                 DropdownMenuItem(child: Text('多选框'), value: 1),
-                DropdownMenuItem(child: Text('多个图片'), value: 2),
+                // DropdownMenuItem(child: Text('多个图片'), value: 2),
               ],
               onChanged: (value) {
                 print('表单选项=====$value');
